@@ -1,9 +1,41 @@
 <!DOCTYPE html>
 <!-- saved from url=(0030)http://www.sentimentron.co.uk/ -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Sentimentron | Under Construction</title>
+
+	<title>Sentimentron</title>
+
+	<script src="assets/jquery-1.9.1.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./assets/style.css">
+
+	<script>
+
+		var greetMessages = [
+			"I'm ready.", 
+			"Hello.",
+			"Ready for orders!",
+			"Ready.",
+			"Here we go."
+		];
+
+		function chooseRandomElem(of) {
+			var length = of.length;
+			var rand   = Math.floor(Math.random() * length);
+			return of[rand];
+		}
+
+		$(document).ready(function() {
+			//
+			// Generate the greeting message
+			//
+			var splashElement = $("#greetingText");
+			var splashMessage = chooseRandomElem(greetMessages);
+			splashElement.text(splashMessage);
+
+			
+		});
+
+	</script>
 
 	<style type="text/css">
 		#splash {
@@ -34,7 +66,7 @@
 
 	<div id="splash">
 
-		<h1>I'm not ready.</h1>
+		<h1><span id="greetingText">I'm not ready.</span></h1>
 		<img src="./assets/splash.png">
 		<p>Thanks for visiting.</p>
 
