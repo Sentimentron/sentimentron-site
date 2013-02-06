@@ -26,8 +26,7 @@
 		//
 
 		var availabilityTestFiles = [
-			"samples/available.json",
-			"samples/invalid.json"
+			"samples/available.json"
 		];
 
 		function generateRPCURL(from_url) {
@@ -49,6 +48,13 @@
 			"Ready.",
 			"Here we go."
 		];
+
+		var searchBoxExamples = [
+			"Barack Obama",
+			"washingtonherald.com",
+			"theguardian.co.uk",
+			"Conservative Party"
+		]
 
 		function UI_showCriticalError(text) {
 			var errorPane = $("#critical");
@@ -83,9 +89,41 @@
 			return ret;
 		}
 
-		$(document).ready(function() {
+		function UI_getSearchBarExample() {
+			item = chooseRandomElem(searchBoxExamples);
 
-			//
+			return "e.g. '" + item + "'";
+		}
+
+		function UI_registerSearchBarStatus() {
+			var searchElem = $("#searchBar");
+			var containsUserInput = false;
+			var searchElemExample = UI_getSearchBarExample();
+
+			searchElem.ready(function() {
+				searchElem.val(searchElemExample);
+				searchElem.focusin(function() {
+					if(!containsUserInput) {
+						searchElem.val('');
+						searchElem.css("color", "black");
+					}
+				});
+				searchElem.focusout(function() {
+					if(searchElem.val() != '') {
+						containsUserInput = true;
+					}
+					else {
+						containsUserInput = false;
+					}
+					if(!containsUserInput) {
+						searchElem.val(searchElemExample);
+						searchElem.css("color", "#CCCCCC");
+					}
+				});
+			});
+		}
+
+		$(document).ready(function() {
 
 			//
 			// Generate the greeting message
@@ -100,6 +138,11 @@
 			if(!RPC_checkAvailability()) {
 				return;
 			}
+
+			//
+			// Set up text box voodoo
+			//
+			UI_registerSearchBarStatus();
 		});
 
 	</script>
@@ -107,6 +150,18 @@
 	<style type="text/css">
 		#splash {
 			text-align: center;
+		}
+
+		#searchBar {
+			padding: 10px;
+			font-size: 20px;
+			color: #CCCCCC;
+			width:400px;
+		}
+
+		#searchSubmit {
+			margin: 10px;
+			font-size: 20px;
 		}
 	</style>
 </head>
@@ -135,7 +190,13 @@
 
 	<div id="splash">
 
-		<h1><span id="greetingText">I'm not ready.</span></h1>
+		<h1><span id="greetingText">Ready.</span></h1>
+		<div id="searchBox">
+			<form>
+				<input id="searchBar" type="text" name="q" value="Type a site or keyword" />
+				<input id="searchSubmit" type="submit" value="Go &gt;"
+			</form>
+		</div>
 		<img src="./assets/splash.png">
 		<p>Thanks for visiting.</p>
 
