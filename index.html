@@ -10,6 +10,38 @@
 
 	<script>
 
+		// Utility functions
+		function chooseRandomElem(of) {
+			var length = of.length;
+			var rand   = Math.floor((Math.random() * length)-0.00001);
+			return of[rand];
+		}
+
+	</script>
+
+	<script>
+
+		//
+		// This script should be used for RPC testing
+		//
+
+		var availabilityTestFiles = [
+			"samples/available.json",
+			"samples/invalid.json"
+		];
+
+		function generateRPCURL(from_url) {
+			return "samples/" + from_url;
+		}
+
+		function checkAvailability() {
+			return chooseRandomElem(availabilityTestFiles);
+		}
+
+	</script>
+
+	<script>
+
 		var greetMessages = [
 			"I'm ready.", 
 			"Hello.",
@@ -18,13 +50,37 @@
 			"Here we go."
 		];
 
-		function chooseRandomElem(of) {
-			var length = of.length;
-			var rand   = Math.floor(Math.random() * length);
-			return of[rand];
+		function UI_showCriticalError(text) {
+			var errorPane = $("#critical");
+			var normalPane = $("#normal");
+
+			normalPane.hide();
+			errorPane.show();
+
+			if(text != null) {
+				alert(text);
+				var messageElem = $("#errorText");
+				messageElem.text(text);
+			}
+		}
+
+		function RPC_checkAvailability() {
+			$.ajax({
+				"url": checkAvailability(),
+				"dataType": "json",
+				"success": function(response) {
+					alert(response.status);
+				},
+				"error": function() {
+					UI_showCriticalError("Failed to retrieve service avaiability.");
+				}
+			});
 		}
 
 		$(document).ready(function() {
+
+			//
+
 			//
 			// Generate the greeting message
 			//
@@ -32,7 +88,10 @@
 			var splashMessage = chooseRandomElem(greetMessages);
 			splashElement.text(splashMessage);
 
-			
+			//
+			// Check service availability
+			//
+			RPC_checkAvailability();
 		});
 
 	</script>
@@ -45,6 +104,8 @@
 </head>
 
 <body>
+
+	<div id="normal">
 
 	<div id="header">
 
@@ -77,7 +138,11 @@
 		<p>Copyright © 2012 Richard Townsend. Sentimentron is a research project, results are automatically generated and may not be accurate. Use of Sentimentron is subject to some <a href="http://www.sentimentron.co.uk/terms.html">Terms of Use</a>.</p>
 
 	</div>
+	</div>
 
-
+	<div id="critical" style="display:none">
+		<center><h1>We've got a problem.</h1>
+		<p id="errorText">Precise problem details are not available.</p></center>
+	</div>
 
 </body></html>
