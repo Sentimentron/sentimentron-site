@@ -65,16 +65,22 @@
 		}
 
 		function RPC_checkAvailability() {
+			ret = true;
 			$.ajax({
 				"url": checkAvailability(),
 				"dataType": "json",
 				"success": function(response) {
-					alert(response.status);
+					var status = response.status;
+					if(status != "normal") {
+						// Do something!
+					}
 				},
 				"error": function() {
-					UI_showCriticalError("Failed to retrieve service avaiability.");
+					UI_showCriticalError("Failed to retrieve service availability.");
+					ret = false;
 				}
 			});
+			return ret;
 		}
 
 		$(document).ready(function() {
@@ -91,7 +97,9 @@
 			//
 			// Check service availability
 			//
-			RPC_checkAvailability();
+			if(!RPC_checkAvailability()) {
+				return;
+			}
 		});
 
 	</script>
