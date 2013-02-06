@@ -26,8 +26,13 @@
 		//
 
 		var availabilityTestFiles = [
-			"samples/available.json"
+			"samples/available.json",
+			"samples/delayed.json"
 		];
+
+		var submitQueryTestFiles = [
+			"samples/submit_success.json"
+		]
 
 		function generateRPCURL(from_url) {
 			return "samples/" + from_url;
@@ -35,6 +40,10 @@
 
 		function checkAvailability() {
 			return chooseRandomElem(availabilityTestFiles);
+		}
+
+		function submitQuery() {
+			return chooseRandomElem(submitQueryTestFiles);
 		}
 
 	</script>
@@ -58,15 +67,42 @@
 
 		function UI_showCriticalError(text) {
 			var errorPane = $("#critical");
-			var normalPane = $("#normal");
+			var queryPane = $("#query");
 
-			normalPane.hide();
+			queryPane.hide();
 			errorPane.show();
 
 			if(text != null) {
-				alert(text);
 				var messageElem = $("#errorText");
 				messageElem.text(text);
+			}
+		}
+
+		function UI_hideSubText() {
+			var subElem = $("#subText");
+			subElem.hide();
+		}
+
+		function UI_showSubText_withColour(text, colour) {
+			var subElem = $("#subText");
+			subElem.css("color", colour);
+			subElem.text(text);
+			subElem.show();
+			return subElem;
+		}
+
+		function UI_showSubText(text) {
+			return UI_showSubText_withColour(text, "#FFFFFF");
+		}
+
+		function UI_showMinorError(text) {
+			var subElem = $("#subText");
+
+			if (text != null) {
+				UI_showSubText_withColour(text, "#FFAAAA")
+			}
+			else {
+				UI_showSubText_withColour("Sentimentron may not be running normally.", "#FFAAAA")
 			}
 		}
 
@@ -77,8 +113,8 @@
 				"dataType": "json",
 				"success": function(response) {
 					var status = response.status;
-					if(status != "normal") {
-						// Do something!
+					if(status == "delayed") {
+						UI_showMinorError("Sentimentron's under high load and may take some additional time to respond.")
 					}
 				},
 				"error": function() {
@@ -91,7 +127,6 @@
 
 		function UI_getSearchBarExample() {
 			item = chooseRandomElem(searchBoxExamples);
-
 			return "e.g. '" + item + "'";
 		}
 
@@ -100,30 +135,90 @@
 			var containsUserInput = false;
 			var searchElemExample = UI_getSearchBarExample();
 
+			var focusInsideFunction = function() {
+				if(!containsUserInput) {
+					searchElem.val('');
+					searchElem.css("color", "black");
+					searchElem.unbind('focus', focusInsideFunction);
+				}
+			};
+
+			var focusOutsideFuntion = function() {
+				if(searchElem.val() != '') {
+					containsUserInput = true;
+				}
+				else {
+					containsUserInput = false;
+				}
+				if(!containsUserInput) {
+					searchElem.val(searchElemExample);
+					searchElem.css("color", "#CCCCCC");
+				}
+				searchElem.bind('focus', focusInsideFunction);
+			}
+
 			searchElem.ready(function() {
 				searchElem.val(searchElemExample);
-				searchElem.focusin(function() {
-					if(!containsUserInput) {
-						searchElem.val('');
-						searchElem.css("color", "black");
+				searchElem.focusin(focusInsideFunction);
+				searchElem.focusout(focusOutsideFuntion);
+			});
+		}
+
+		function UI_queryMonitor(identifier, status) {
+			var splashElement = $("#greetingText");
+			splashElement.text("One moment please...");
+			UI_hideSubText();
+		}
+
+		function UI_searchFormSubmit() {
+			var searchForm = $("#searchForm");
+			var submitFunc = function() {
+				// Retrieve text from the search bar 
+				var searchBox = $("#searchBar");
+				var query = searchBox.val();
+
+				// Length validation check
+				if(query.trim().length == 0) {
+					UI_showMinorError("Please enter a search term.");
+					return;
+				}
+
+				UI_hideSubText();
+				UI_showSubText("Submitting...")
+
+				// Submit to RPC
+				$.ajax({
+					"url": submitQuery(),
+					"dataType": "json",
+					"success": function(response) {
+						var status = response.status;
+						if(status == "ok") {
+							UI_queryMonitor(status.id, status);
+						}
+						else if (status == "validation") {
+							UI_showMinorError(status.message);
+						}
+					},
+					"error": function() {
+						UI_showCriticalError("Query server became unavailable.");
+						ret = false;
 					}
 				});
-				searchElem.focusout(function() {
-					if(searchElem.val() != '') {
-						containsUserInput = true;
-					}
-					else {
-						containsUserInput = false;
-					}
-					if(!containsUserInput) {
-						searchElem.val(searchElemExample);
-						searchElem.css("color", "#CCCCCC");
-					}
-				});
+
+			}
+
+			searchForm.ready(function() {
+				searchForm.submit(submitFunc);
 			});
 		}
 
 		$(document).ready(function() {
+
+			//
+			// Display the main page
+			//
+			var queryPane = $("#query");
+			queryPane.show();
 
 			//
 			// Generate the greeting message
@@ -143,6 +238,11 @@
 			// Set up text box voodoo
 			//
 			UI_registerSearchBarStatus();
+
+			//
+			// Set up search form 
+			//
+			UI_searchFormSubmit();
 		});
 
 	</script>
@@ -163,12 +263,22 @@
 			margin: 10px;
 			font-size: 20px;
 		}
+		#subText {
+			font-weight: bold;
+		}
 	</style>
 </head>
 
 <body>
 
-	<div id="normal">
+	<noscript>
+		<div>
+			<h1>Javascript error</h1>
+			<p>Sentimentron needs Javascript enabled so it can show you graphs. </p>
+		</div>
+	</noscript>
+
+	<div id="query" style="display:none">
 
 	<div id="header">
 
@@ -192,12 +302,13 @@
 
 		<h1><span id="greetingText">Ready.</span></h1>
 		<div id="searchBox">
-			<form>
+			<form id="searchForm" action="javascript:">
 				<input id="searchBar" type="text" name="q" value="Type a site or keyword" />
 				<input id="searchSubmit" type="submit" value="Go &gt;"
 			</form>
 		</div>
-		<p id="subText">Enter some sites and/or keywords you want to know about.</p>
+		<p>Enter some sites and/or keywords you want to know about.</p>
+		<p id="subText" style="display:none"> </p>
 		<img src="./assets/splash.png">
 		<p>Thanks for visiting.</p>
 
