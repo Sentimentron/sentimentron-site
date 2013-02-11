@@ -52,10 +52,21 @@
 		var title = plotSection.children('h1:first');
 		title.text(sectionTitle);
 
-		console.log(data.pos_sentences.sort())
+		var sortFunc = function(a, b) {
+			a = a[0]; b = b[0];
+			if (a > b) return  1;
+			if (a < b) return -1;
+			return 0;
+		};
+
+		var negativeMapFunc = function(a) {
+			return [a[0], -a[1]];
+		};
+
+		neg_sentences = data.neg_sentences.map(negativeMapFunc)
 
 		// Plot the data
-		$.plot("#plotArea", [data.pos_sentences.sort(), data.neg_sentences.sort()], {'xaxis' : {'mode': 'time'}});
+		$.plot("#plotArea", [data.pos_sentences.sort(sortFunc), neg_sentences.sort(sortFunc)], {'xaxis' : {'mode': 'time'}, 'colors': ['#99BBBB','#FFBBBB']});
 
 	}
 
