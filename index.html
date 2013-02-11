@@ -31,8 +31,14 @@
 		];
 
 		var submitQueryTestFiles = [
-			"samples/submit_success.json"
-		]
+			"samples/submit_success.json",
+			"samples/submit_validation.json"
+		];
+
+		var waitOnQueryTestFiles = [
+			"samples/wait_normal.json",
+			"samples/wait_fulfilled.json"
+		] 
 
 		function generateRPCURL(from_url) {
 			return "samples/" + from_url;
@@ -44,6 +50,10 @@
 
 		function submitQuery() {
 			return chooseRandomElem(submitQueryTestFiles);
+		}
+
+		function waitForQuery() {
+			return chooseRandomElem(waitOnQueryTestFiles);
 		}
 
 	</script>
@@ -58,12 +68,24 @@
 			"Here we go."
 		];
 
+		var pleaseWaitMessages = [
+			"One moment please",
+			"Hang on a sec",
+			"I'll be right with you",
+			"Bear with me",
+			"I'll have to think about that"
+		]
+
 		var searchBoxExamples = [
 			"Barack Obama",
 			"washingtonherald.com",
 			"theguardian.co.uk",
 			"Conservative Party"
-		]
+		];
+
+		function UI_getWaitMessage(text) {
+			return chooseRandomElem(pleaseWaitMessages) + '...';
+		}
 
 		function UI_showCriticalError(text) {
 			var errorPane = $("#critical");
@@ -164,15 +186,56 @@
 			});
 		}
 
+		function UI_showEmail() {
+			$("#query").hide();
+			$("#email_ui").show();
+		}
+
 		function UI_queryMonitor(identifier, status) {
 			var splashElement = $("#greetingText");
-			splashElement.text("One moment please...");
 			UI_hideSubText();
+
+			retryCount = 5;
+
+			var intervalFunction = function() {
+				if(!retryCount) {
+					UI_showEmail();
+					return;
+				}
+				retryCount--;
+				$.ajax({
+					"url": waitForQuery(),
+					"dataType": "json",
+					"success": function(response) {
+						var status = response.status;
+						if(status == "fulfilled") {
+							window.location = "http://localhost:8000/result.html"
+						}
+						else if(status == "waiting") {
+							splashElement.text(UI_getWaitMessage());
+						}
+						else {
+							UI_showCriticalError("Unusual response from query server. Your query has been cancelled.");
+						}
+					},
+					"error": function() {
+						UI_showCriticalError("Query server became unavailable.");
+						ret = false;
+					}
+			});
+			}
+
+			intervalFunction();
+			var interval = setInterval(intervalFunction, 5000);
 		}
 
 		function UI_searchFormSubmit() {
 			var searchForm = $("#searchForm");
 			var submitFunc = function() {
+
+				// Hide minor errors
+				UI_hideSubText();
+
 				// Retrieve text from the search bar 
 				var searchBox = $("#searchBar");
 				var query = searchBox.val();
@@ -193,10 +256,11 @@
 					"success": function(response) {
 						var status = response.status;
 						if(status == "ok") {
-							UI_queryMonitor(status.id, status);
+							// TODO: disable the query box
+							UI_queryMonitor(response.id, status);
 						}
 						else if (status == "validation") {
-							UI_showMinorError(status.message);
+							UI_showMinorError(response.message);
 						}
 					},
 					"error": function() {
@@ -252,7 +316,7 @@
 			text-align: center;
 		}
 
-		#searchBar {
+		#searchBar, #emailBox {
 			padding: 10px;
 			font-size: 20px;
 			color: #CCCCCC;
@@ -304,7 +368,7 @@
 		<div id="searchBox">
 			<form id="searchForm" action="javascript:">
 				<input id="searchBar" type="text" name="q" value="Type a site or keyword" />
-				<input id="searchSubmit" type="submit" value="Go &gt;"
+				<input id="searchSubmit" type="submit" value="Go &gt;" />
 			</form>
 		</div>
 		<p>Enter some sites and/or keywords you want to know about.</p>
@@ -324,6 +388,16 @@
 	<div id="critical" style="display:none">
 		<center><h1>We've got a problem.</h1>
 		<p id="errorText">Precise problem details are not available.</p></center>
+	</div>
+
+	<div id="email_ui" style="display:none">
+		<center><h1>Sorry for the wait.</h1>
+		<p>It's taking longer than normal to process your query. If you type your email address in the box below, Sentimentron will send you an email when your results are ready. Alternatively, you can continue waiting.</p>
+		<form>
+			<input id="emailBox" />
+		</form>
+		<p>Sentimentron will treat your email as confidential and won't retain it.</p>
+		</center>
 	</div>
 
 </body></html>
