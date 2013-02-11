@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://www.sentimentron.co.uk/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+	<title>Sentimentron</title>
+
+	<script src="assets/jquery-1.9.1.min.js"></script>
+	<script src="flot/jquery.flot.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="./assets/style.css">
+
+	<script>
+
+		// Utility functions
+		function chooseRandomElem(of) {
+			var length = of.length;
+			var rand   = Math.floor((Math.random() * length)-0.00001);
+			return of[rand];
+		}
+
+	</script>
+
+	<script>
+
+		//
+		// This script should be used for RPC testing
+		//
+
+		var resultTestFiles = [
+			"samples/foxnews.json",
+			"samples/foxnews_democrat.json",
+			"samples/apple_computer.json"
+		]
+
+		function getResultURL() {
+			return chooseRandomElem(resultTestFiles);
+		}
+
+	</script>
+
+	<script>
+
+	function UI_plotSection(sectionTitle, data){
+
+		// Create the div which contains the plot
+		var plotSection = $("#chartTemplate");
+
+		// Create the plotArea and append it to the div
+		var plotArea = $("#plotArea");
+
+		// Change the title 
+		var title = plotSection.children('h1:first');
+		title.text(sectionTitle);
+
+		console.log(data.pos_sentences.sort())
+
+		// Plot the data
+		$.plot("#plotArea", [data.pos_sentences.sort(), data.neg_sentences.sort()], {'xaxis' : {'mode': 'time'}});
+
+	}
+
+	var plotCharts = function(data){
+		var infoSection = data.info;
+		var overviewSection = data.overview;
+
+		UI_plotSection("Overview", overviewSection);
+	}
+
+	$(document).ready(function() {
+
+		// Display the main page body 
+		$("#wrapper").show();
+
+		// Load the result data...
+		$.ajax({
+			"url": getResultURL(),
+			"dataType": "json",
+			"success": function(response) {
+				plotCharts(response);
+			},
+			"error": function() {
+				alert("error")
+			}
+		})
+
+	});
+
+	</script>
+
+	<style type="text/css">
+
+	</style>
+</head>
+
+<body>
+
+	<noscript>
+		<div>
+			<h1>Javascript error</h1>
+			<p>Sentimentron needs Javascript enabled so it can show you graphs. </p>
+		</div>
+	</noscript>
+
+	<div id="wrapper" style="display:none">
+
+	<div id="header">
+
+		<img id="logo" src="./assets/Sentimentron.png">
+
+		<p><a href="http://www.sentimentron.co.uk/about.html">About</a></p>
+		<p><a href="http://www.sentimentron.co.uk/about.html">Stats</a></p>
+
+		<div id="header-search-form">
+
+			<form>
+				<input type="text">
+				<img id="search-mag" src="./assets/magnifier.png">
+			</form>
+
+		</div>
+
+	</div>
+
+	<div id="chartTemplate">
+
+		<h1>Overview</h1>
+
+		<div id="plotArea" style="width:400px;height:400px;background-color:white;">
+		</div>
+
+		<table id="statistics">
+		</div>
+
+	</div>
+
+	</div>
+
+</body></html>

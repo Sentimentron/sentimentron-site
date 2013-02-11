@@ -147,6 +147,15 @@
 			return ret;
 		}
 
+		function UI_redirectToResult(url) {
+			$(document).css("overflow", "hidden");
+			var queryDiv = $("#query");
+			queryDiv.animate({'margin-left':'-250%'}, "slow", function() {
+				window.location = url;
+			});
+
+		}
+
 		function UI_getSearchBarExample() {
 			item = chooseRandomElem(searchBoxExamples);
 			return "e.g. '" + item + "'";
@@ -209,7 +218,8 @@
 					"success": function(response) {
 						var status = response.status;
 						if(status == "fulfilled") {
-							window.location = "http://localhost:8000/result.html"
+							clearInterval(intervalFunction);
+							UI_redirectToResult("http://localhost:8000/results.html");
 						}
 						else if(status == "waiting") {
 							splashElement.text(UI_getWaitMessage());
