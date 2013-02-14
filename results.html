@@ -107,18 +107,14 @@
 		margin-left:5px;
 		margin-top:10px;
 		font-size: 10px;
-		float:left;
+	}
+
+	.resultsPanel {
+		width:400px;
 	}
 
 	.sitePanel {
 		width:500px;
-	}
-
-	#staticColumn {
-		margin: 0px;
-		padding: 0px;
-		width:240px;
-		float:left;
 	}
 
 	.panel h1 {
@@ -135,13 +131,27 @@
 		margin-bottom:15px;
 	}
 
+	.panel table {
+		text-align: left;
+	}
+
+	.panel th {
+		padding: 2.5px;
+	}
+
 	.panel ul {
 		margin: 0px;
 		padding: 0px;
+		list-style-type: none;
 	}
 
-	.panel input {
-		float:right;
+	.panel li {
+		width:150px;
+	}
+
+	.panel label {
+		text-align: right;
+		width: 156px;
 	}
 
 	.stat {
@@ -180,46 +190,63 @@
 
 	</div>
 
-	<div id="staticColumn">
-		<div id="controlPanel" class="panel">
-			<form id="controlForm">
-				<ul style="list-style-type:none">
-					<li><label for="cumulativeCheck">Cumulative</label><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></li>
-					<li><label for="logCheck">Log scale</label><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></li>
-				</ul>
-			</form>
-		</div>
-			<div id="queryPanel" class="panel">
-			<p><span class="stat">2000</span> articles retrieved</p>
-			<p><span class="stat">2</span> subdomains retrieved</p>
-			<p><span class="stat">47</span> keywords resolved</p>
-			<hr />
-			<p><span class="stat">4.7s</span> execution time</p>
-			<hr />
-			<p><span class="stat">1450</span> documents analysed</p>
-			<p><span class="stat">15 321</span> sentences analysed</p>
-			<p><span class="stat">47 231</span> phrases analysed</p>
-			<hr />
-			<h1>Keyword expansions</h1>
-			<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
-		</div>
-	</div>
+	<table style="width: 100%">
 
+		<tr><td style="width: 230px" valign="top">
 
-		<div id="chartTemplate" class="sitePanel panel">
+			<div id="controlPanel" class="panel">
+				<form id="controlForm">
 
-			<h1>Overview</h1>
-			<!-- Sentiment plot goes here -->
-			<hr />
-			<h2>Article Volume</h2>
+					<table style="text-align:left; width: 100px">
+						<tr><td><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
+						<tr><td><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
+					</table>
+					<table style="width:60%">
+						<tr><th>Lines</th><th>Dots</th></tr>
+						<tr><td><input type="radio" name="displayRadio" value="lines" checked="checked"/></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
+					</table>
+					<table id="lineOptionsTable">
+						<tr><th>Documents</th><th>Sentences</th><th>Phrases</th></tr>
+						<tr>
+							<td><input type="radio" name="lineRadio" value="documents" checked="checked"/></td>
+							<td><input type="radio" name="lineRadio" value="phrases"   checked="checked"/></td>
+							<td><input type="radio" name="lineRadio" value="sentences" checked="checked"/></td>
+						</tr>
+					</table>
 
-			<div id="plotArea" style="height:400px;background-color:white;">
+				</form>
 			</div>
-
-			<table id="statistics">
+				<div id="queryPanel" class="panel">
+				<p><span class="stat">2000</span> articles retrieved</p>
+				<p><span class="stat">2</span> subdomains retrieved</p>
+				<p><span class="stat">47</span> keywords resolved</p>
+				<hr />
+				<p><span class="stat">4.7s</span> execution time</p>
+				<hr />
+				<p><span class="stat">1450</span> documents analysed</p>
+				<p><span class="stat">15 321</span> sentences analysed</p>
+				<p><span class="stat">47 231</span> phrases analysed</p>
+				<hr />
+				<h1>Keyword expansions</h1>
+				<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
 			</div>
+		</td><td valign="top">
 
-		</div>
+			<div id="chartTemplate" class="panel resultsPanel">
+
+				<h1>Overview</h1>
+				<!-- Sentiment plot goes here -->
+				<hr />
+				<h2>Article Volume</h2>
+
+				<div id="plotArea" style="height:400px;background-color:white;">
+				</div>
+
+				<table id="statistics">
+				</div>
+
+			</div>
+		</td></tr></table>
 
 
 </body></html>
