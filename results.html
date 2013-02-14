@@ -100,6 +100,54 @@
 
 	<style type="text/css">
 
+	.panel {
+		background: rgba(54, 54, 54, 0.9);
+		width:200px;
+		padding:15px;
+		margin-left:5px;
+		margin-top:10px;
+		font-size: 10px;
+		float:left;
+	}
+
+	.sitePanel {
+		width:500px;
+	}
+
+	#staticColumn {
+		margin: 0px;
+		padding: 0px;
+		width:240px;
+		float:left;
+	}
+
+	.panel h1 {
+		font-size: 20px;
+		font-variant: small-caps;	
+		margin: 0px;
+		margin-bottom:15px;
+	}
+
+	.panel h2 {
+		font-size: 17px;
+		font-variant: small-caps;	
+		margin: 0px;
+		margin-bottom:15px;
+	}
+
+	.panel ul {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.panel input {
+		float:right;
+	}
+
+	.stat {
+		font-size: 16px;
+	}
+
 	</style>
 </head>
 
@@ -132,18 +180,46 @@
 
 	</div>
 
-	<div id="chartTemplate">
-
-		<h1>Overview</h1>
-
-		<div id="plotArea" style="width:400px;height:400px;background-color:white;">
+	<div id="staticColumn">
+		<div id="controlPanel" class="panel">
+			<form id="controlForm">
+				<ul style="list-style-type:none">
+					<li><label for="cumulativeCheck">Cumulative</label><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></li>
+					<li><label for="logCheck">Log scale</label><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></li>
+				</ul>
+			</form>
 		</div>
-
-		<table id="statistics">
+			<div id="queryPanel" class="panel">
+			<p><span class="stat">2000</span> articles retrieved</p>
+			<p><span class="stat">2</span> subdomains retrieved</p>
+			<p><span class="stat">47</span> keywords resolved</p>
+			<hr />
+			<p><span class="stat">4.7s</span> execution time</p>
+			<hr />
+			<p><span class="stat">1450</span> documents analysed</p>
+			<p><span class="stat">15 321</span> sentences analysed</p>
+			<p><span class="stat">47 231</span> phrases analysed</p>
+			<hr />
+			<h1>Keyword expansions</h1>
+			<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
 		</div>
-
 	</div>
 
-	</div>
+
+		<div id="chartTemplate" class="sitePanel panel">
+
+			<h1>Overview</h1>
+			<!-- Sentiment plot goes here -->
+			<hr />
+			<h2>Article Volume</h2>
+
+			<div id="plotArea" style="height:400px;background-color:white;">
+			</div>
+
+			<table id="statistics">
+			</div>
+
+		</div>
+
 
 </body></html>
