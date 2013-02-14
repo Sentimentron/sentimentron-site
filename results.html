@@ -6,6 +6,7 @@
 
 	<script src="assets/jquery-1.9.1.min.js"></script>
 	<script src="flot/jquery.flot.js"></script>
+	<script src="flot/jquery.flot.axislabels.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./assets/style.css">
 
@@ -27,7 +28,8 @@
 		//
 
 		var resultTestFiles = [
-			"samples/foxnews.json",
+			//"samples/foxnews.json",
+			"samples/obama.json",
 			"samples/foxnews_democrat.json",
 			"samples/apple_computer.json"
 		]
@@ -66,8 +68,27 @@
 		neg_sentences = data.neg_sentences.map(negativeMapFunc)
 
 		// Plot the data
-		$.plot("#plotArea", [data.pos_sentences.sort(sortFunc), neg_sentences.sort(sortFunc)], {'xaxis' : {'mode': 'time'}, 'colors': ['#99BBBB','#FFBBBB']});
 
+		var plotOptions = {
+			bars: {
+				show: true
+			},
+			xaxis: {
+				mode: 'time',
+		        axisLabel: 'Date',
+	            axisLabelUseCanvas: true,
+	            axisLabelFontSizePixels: 10,
+	            axisLabelFontFamily: 'Arial'
+			},
+			yaxis: {
+				axisLabel: 'Articles / day',
+            	axisLabelUseCanvas: true,
+            	axisLabelFontSizePixels: 10,
+			},
+			'colors': ['#99BBBB','#FFBBBB']
+		}
+
+		$.plot("#plotArea", [data.pos_sentences.sort(sortFunc), neg_sentences.sort(sortFunc)], plotOptions);
 	}
 
 	var plotCharts = function(data){
@@ -110,7 +131,7 @@
 	}
 
 	.resultsPanel {
-		width:400px;
+		width:580px;
 	}
 
 	.sitePanel {
@@ -119,7 +140,6 @@
 
 	.panel h1 {
 		font-size: 20px;
-		font-variant: small-caps;	
 		margin: 0px;
 		margin-bottom:15px;
 	}
@@ -202,7 +222,7 @@
 						<tr><td><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
 					</table>
 					<table style="width:60%">
-						<tr><th>Lines</th><th>Dots</th></tr>
+						<tr><th>Points</th><th>Blobs</th></tr>
 						<tr><td><input type="radio" name="displayRadio" value="lines" checked="checked"/></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
 					</table>
 					<table id="lineOptionsTable">
@@ -234,13 +254,10 @@
 
 			<div id="chartTemplate" class="panel resultsPanel">
 
-				<h1>Overview</h1>
-				<!-- Sentiment plot goes here -->
-				<hr />
-				<h2>Article Volume</h2>
-
-				<div id="plotArea" style="height:400px;background-color:white;">
+				<div class="plotAreaPadding" style="background-color:white; padding:15px">
+				<div id="plotArea" style="height:400px;width:550px;background-color:white;">
 				</div>
+			</div>
 
 				<table id="statistics">
 				</div>
