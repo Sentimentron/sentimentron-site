@@ -93,9 +93,48 @@
 		$.plot("#plotArea", [data.pos_sentences.sort(sortFunc), neg_sentences.sort(sortFunc)], plotOptions);
 	}
 
-	var plotCharts = function(data){
+	var plotSectionCounter = 0;
+	var plotAreaInformation = {}
+
+	function UI_addPlotSection(title, data) {
+		plotSectionCounter++;
+		// Create the scaffold
+		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
+
+		// Update the section title
+		var plotSectionTitle = plotSectionDiv.find('h1');
+		plotSectionTitle.text(title)
+
+		// Find the scaffold's plotArea div
+		var plotArea = plotSectionDiv.find('.plotArea');
+
+		// Update the scaffold identifiers
+		plotSectionDiv.attr("id", "plotSection"+plotSectionCounter);
+		plotArea.attr("id", "plotArea"+plotSectionCounter);
+
+		// Append to results section
+		var appendTo = $(document).find("#resultsSection");
+		appendTo.append(plotSectionDiv);
+
+		// Update internal records 
+		plotAreaInformation[plotSectionCounter] = data
+	}
+
+	function plotCharts() {
+		// Select the datasource to plot from 
+
+		// Normalize...
+	}
+
+	var consumeInput = function(data){
 		var infoSection = data.info;
 		var overviewSection = data.overview;
+
+		UI_addPlotSection("Overview", overviewSection);
+
+		$.each(data.details, function(index, item){
+			UI_addPlotSection(index, item);
+		})
 
 		UI_plotSection("Overview", overviewSection);
 	}
@@ -110,7 +149,8 @@
 			"url": getResultURL(),
 			"dataType": "json",
 			"success": function(response) {
-				plotCharts(response);
+				consumeInput(response);
+				plotCharts();
 			},
 			"error": function() {
 				alert("error")
@@ -132,8 +172,13 @@
 		font-size: 10px;
 	}
 
+	.overviewPanel {
+		min-width: 580px;
+		width: 90%;
+	}
+
 	.resultsPanel {
-		width:580px;
+		width:680px;
 	}
 
 	.sitePanel {
@@ -158,7 +203,6 @@
 	}
 
 	.panel th {
-		padding: 2.5px;
 	}
 
 	.panel ul {
@@ -178,6 +222,25 @@
 
 	.stat {
 		font-size: 16px;
+	}
+
+	.plotAreaPadding {
+		background-color: white; 
+		padding: 15px;
+	}
+
+	.plotArea {
+		height:400px;
+		background-color:white;
+	}
+
+	.radioTable {
+	}
+	.radioTable th {
+		text-align: left;
+	}
+	.radioTable td {
+		text-align: left;
 	}
 
 	</style>
@@ -223,19 +286,19 @@
 						<tr><td><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
 						<tr><td><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
 					</table>
-					<table style="width:60%">
-						<tr><th>Points</th><th>Blobs</th></tr>
-						<tr><td><input type="radio" name="displayRadio" value="lines" checked="checked"/></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
-					</table>
-					<table id="lineOptionsTable">
-						<tr><th>Documents</th><th>Sentences</th><th>Phrases</th></tr>
-						<tr>
-							<td><input type="radio" name="lineRadio" value="documents" checked="checked"/></td>
-							<td><input type="radio" name="lineRadio" value="phrases"   checked="checked"/></td>
-							<td><input type="radio" name="lineRadio" value="sentences" checked="checked"/></td>
-						</tr>
-					</table>
-
+						<table style="width:60%;" class="radioTable">
+							<tr><th>Points</th><th>Blobs</th></tr>
+							<tr><td><input type="radio" name="displayRadio" value="lines" checked="checked"/></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
+						</table>
+						<table id="lineOptionsTable" class="radioTable">
+							<tr><th>Documents</th><th>Sentences</th><th>Phrases</th><th>Volume</th></tr>
+							<tr>
+								<td><input type="radio" name="lineRadio" value="documents" checked="checked"/></td>
+								<td><input type="radio" name="lineRadio" value="phrases"   checked="checked"/></td>
+								<td><input type="radio" name="lineRadio" value="sentences" checked="checked"/></td>
+								<td><input type="radio" name="lineRadio" value="volume" checked="checked"/></td>
+							</tr>
+						</table>
 				</form>
 			</div>
 				<div id="queryPanel" class="panel">
@@ -252,12 +315,12 @@
 				<h1>Keyword expansions</h1>
 				<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
 			</div>
-		</td><td valign="top">
+		</td><td valign="top" id="resultsSection">
 
 			<div id="chartTemplate" class="panel resultsPanel">
 
-				<div class="plotAreaPadding" style="background-color:white; padding:15px">
-				<div id="plotArea" style="height:400px;width:550px;background-color:white;">
+				<div class="plotAreaPadding">
+				<div id="plotArea" class="plotArea">
 				</div>
 			</div>
 
