@@ -43,6 +43,12 @@
 
 	<script>
 
+	var showingCumulative  = false; 
+	var showingLogarithmic = false;
+
+	var displayItem = "volume"
+	var displayMode = "line"
+
 	function UI_plotSection(sectionTitle, data){
 
 		// Create the div which contains the plot
@@ -96,6 +102,12 @@
 	var plotSectionCounter = 0;
 	var plotAreaInformation = {}
 
+	function UI_plotSections(sectionId) {
+		sectionTitle = "plotSection"+sectionId;
+		data = plotAreaInformation[sectionId];
+		UI_plotSection(sectionTitle, data);
+	}
+
 	function UI_addPlotSection(title, data) {
 		plotSectionCounter++;
 		// Create the scaffold
@@ -120,13 +132,14 @@
 		plotAreaInformation[plotSectionCounter] = data
 	}
 
-	function plotCharts() {
-		// Select the datasource to plot from 
 
-		// Normalize...
+	function UI_plotCharts() {
+		for(i = 0; i < plotSectionCounter; i++) {
+			UI_plotSection(i);
+		}
 	}
 
-	var consumeInput = function(data){
+	var RPC_consumeInput = function(data){
 		var infoSection = data.info;
 		var overviewSection = data.overview;
 
@@ -149,8 +162,8 @@
 			"url": getResultURL(),
 			"dataType": "json",
 			"success": function(response) {
-				consumeInput(response);
-				plotCharts();
+				RPC_consumeInput(response);
+				UI_plotCharts();
 			},
 			"error": function() {
 				alert("error")

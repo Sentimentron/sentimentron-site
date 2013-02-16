@@ -150,10 +150,10 @@
 		function UI_redirectToResult(url) {
 			$(document).css("overflow", "hidden");
 			var queryDiv = $("#query");
-			queryDiv.animate({'margin-left':'-250%'}, "slow", function() {
+			queryDiv.animate({'margin-left':'-250%'}, "fast", function() {
 				window.location = url;
 			});
-
+			queryDiv.fadeOut('fast')
 		}
 
 		function UI_getSearchBarExample() {
