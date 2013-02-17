@@ -57,6 +57,7 @@
 
 	var showingCumulative  = false; 
 	var showingLogarithmic = false;
+	var onlyRelevant = false;
 
 	var displayItem = "volume";
 	var displayMode = "line";
@@ -287,6 +288,8 @@
 			negativeAxis = accumulate(negativeAxis);
 		}
 
+		var data = [positiveAxis, negativeAxis]
+
 		var plotOptions = {
 			grid: {
 				clickable: true,
@@ -320,7 +323,8 @@
         	},
         	pan: {
             	interactive: true
-        	}
+        	},
+        	colors: ['#99BBBB','#FFBBBB']
 		}
 
 		// Fix for weird stacking behaviour
