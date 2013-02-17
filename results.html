@@ -5,9 +5,12 @@
 	<title>Sentimentron</title>
 
 	<script src="assets/jquery-1.9.1.min.js"></script>
+	<script src="assets/jquery.event.drag-2.2.js"></script>
 	<script src="flot/jquery.flot.js"></script>
+	<script src="flot/jquery.flot.stack.js"></script>
 	<script src="flot/jquery.flot.axislabels.js"></script>
 	<script src="flot/jquery.flot.autoscaling.js"></script>
+	<script src="flot/jquery.flot.navigate.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./assets/style.css">
 
@@ -82,9 +85,25 @@
 	function convert_singletonDict(data) {
 		ret = []
 		$.each(data, function(k) {
-			ret.push([k, data[k]])
+			ret.push([parseInt(k), data[k]])
 		});
 		return ret; 
+	}
+
+	function accumulate(data) {
+		ret = [], accum = 0
+		$.each(data, function(k) {
+			if(showingCumulative)
+				accum += data[k][1]
+			else
+				accum = data[k][1]
+			if(showingLogarithmic)
+				pushVal = Math.log(accum+0.0001)/Math.log(10)
+			else
+				pushVal = accum
+			ret.push([data[k][0], pushVal])
+		});
+		return ret;
 	}
 
 	function UI_prepareData_volume(data) {
@@ -96,8 +115,9 @@
 					ret = ret_crawled
 				if(data[t][d].date_method == "Certain")
 					ret = ret_certain
-				if(data[t][d].date_method == "Uncertain")
+				if(data[t][d].date_method == "Uncertain") {
 					ret = ret_uncertain
+				}
 				if(t in ret) {
 					ret[t] = ret[t] + 1;
 				}
@@ -108,20 +128,35 @@
 		});
 
 		var cnv = convert_singletonDict;
-		return [
-				{
-					label: "Crawled",
-					data : cnv(ret_crawled)
-				},
-				{
-					label: "Certain",
-					data : cnv(ret_certain)
-				},
-				{
-					label: "Uncertain",
-					data : cnv(ret_crawled)
-				}
-			];
+
+		ret_crawled = cnv(ret_crawled).sort(sortFunc)
+		ret_certain = cnv(ret_certain).sort(sortFunc)
+		ret_uncertain = cnv(ret_uncertain).sort(sortFunc)
+
+		ret_crawled = accumulate(ret_crawled);
+		ret_certain = accumulate(ret_certain);
+		ret_uncertain = accumulate(ret_uncertain);
+
+		ret = [] 
+		if (ret_crawled.length > 0) {
+			ret.push({
+				label: "Crawled",
+				data : ret_crawled
+			});
+		}
+		if (ret_certain.length > 0) {
+			ret.push({
+				label: "Certain",
+				data : ret_certain
+			});
+		}
+		if (ret_uncertain.length > 0) {
+			ret.push({
+				label: "Uncertain",
+				data : ret_uncertain
+			});
+		}
+		return ret;
 
 	}
 
@@ -134,7 +169,7 @@
 
 	function UI_showAdditionalDataPanel(identifier, information) {
 		var addPanel = $("#additionalPanel");
-		var panelTemplate = $('<p><a class="originalUrl"/><br /><a class="archivedUrl">Archived link &gt;</a></p><hr />');
+		var panelTemplate = $('<p><a class="originalUrl"/><br /><a class="archivedUrl">Archived link &gt;</a></p>');
 
 		// If it's got a headline, make sure we show it
 		var headline = information['headline'];
@@ -228,36 +263,70 @@
 
 		// Plot the data
 
+		var yAxisLabel = "Articles / Day"
+		if(showingCumulative) {
+			yAxisLabel = "Total Articles"
+		}
+		if(showingLogarithmic) {
+			yAxisLabel += " (log scale)"
+		}
+
+		var yAxisTicks = null;
+
 		var plotOptions = {
 			grid: {
-				clickable: true
+				clickable: true,
+				hoverable: true
 			},
 			points: {
 				show: true
+			},
+			bars: {
+				show: !showingCumulative
+			},
+			lines : {
+				show: showingCumulative
 			},
 			xaxis: {
 				mode: 'time',
 		        axisLabel: 'Date',
 	            axisLabelUseCanvas: true,
 	            axisLabelFontSizePixels: 10,
-	            axisLabelFontFamily: 'Arial'
-			},
+	            axisLabelFontFamily: 'Arial',
+	            min: 933430400000
+	  			},
 			yaxis: {
-				axisLabel: 'Articles / day',
+				axisLabel: yAxisLabel,
             	axisLabelUseCanvas: true,
             	axisLabelFontSizePixels: 10,
-            	autoscale: displayElem != "volume"
-			},
+            	autoscale: false,
+            	panRange: [0, 1000000000000]
+			},	
+			zoom: {
+            	interactive: true
+        	},
+        	pan: {
+            	interactive: true
+        	}
 			//'colors': ['#99BBBB','#FFBBBB']
 		}
 
 		$.plot("#"+plotAreaTitle, data, plotOptions);
+		var dragging = false;
 		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
-			if (item) {
+			if (item && !dragging) {
 				positionX = item.datapoint[0]
 		    	UI_showAdditionalData(positionX, originalData);
 		    }
-		})
+		});
+
+		$('#'+plotAreaTitle + " canvas").bind('dragstart', function() {
+			dragging = true;
+		});
+		$('#'+plotAreaTitle + " canvas").bind('dragend', function() {
+			setTimeout(function() {dragging = false;}, 100);
+		});
+		$('#'+plotAreaTitle + " canvas").bind('plotzoom', function(event, plot){});
 	}
 
 	var plotSectionCounter = 0;
@@ -297,6 +366,16 @@
 
 
 	function UI_plotCharts() {
+
+		// Read form values
+		showingCumulative = false;
+		showingLogarithmic = false;
+		if($('#cumulativeCheck').is(':checked')) {
+			showingCumulative = true;
+		}
+		if($('#logCheck').is(':checked')) {
+			showingLogarithmic = true;
+		}
 		for(i = 0; i < plotSectionCounter; i++) {
 			UI_plotSection(i);
 		}
@@ -322,6 +401,10 @@
 	$(document).ready(function() {
 
 		$('html').addClass('busy');
+
+		$("input[type='checkbox']").change( function() {
+			UI_plotCharts();
+		});
 
 		// Display the main page body 
 		$("#wrapper").show();
@@ -476,11 +559,11 @@
 
 					<table style="text-align:left; width: 100px">
 						<tr><td><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
-						<tr><td><input type="checkbox" name="logCheck" checked="checked" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
+						<tr><td><input type="checkbox" disabled="disabled" name="logCheck" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
 					</table>
 						<table style="width:60%;" class="radioTable">
 							<tr><th>Points</th><th>Blobs</th></tr>
-							<tr><td><input type="radio" name="displayRadio" value="lines" checked="checked"/></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
+							<tr><td><input type="radio" name="displayRadio" value="lines" /></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
 						</table>
 						<table id="lineOptionsTable" class="radioTable">
 							<tr><th>Documents</th><th>Sentences</th><th>Phrases</th><th>Volume</th></tr>

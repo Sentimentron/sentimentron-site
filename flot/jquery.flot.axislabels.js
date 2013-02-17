@@ -34,9 +34,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // Therefore, we use a trick where we run the draw routine twice:
         // the first time to get the tick measurements, so that we can change
         // them, and then have it draw it again.
+        var pass = 0;
         var secondPass = false;
         plot.hooks.draw.push(function (plot, ctx) {
-            if (!secondPass) {
+            pass++;
+            if (pass < 2) {
                 // MEASURE AND SET OPTIONS
                 $.each(plot.getAxes(), function(axisName, axis) {
                     var opts = axis.options // Flot 0.7
@@ -79,8 +81,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 secondPass = true;
                 plot.setupGrid();
                 plot.draw();
-
-
             } else {
                 // DRAW
                 $.each(plot.getAxes(), function(axisName, axis) {
