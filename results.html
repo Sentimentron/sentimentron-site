@@ -113,7 +113,30 @@
 		}
 	}
 
-	function _UI_plotSection_volume(sectionTitle, plotAreaTitle, data){
+	function UI_showAdditionalData(plotX, plotIdentifiersData) {
+		var relevantData; 
+		
+		// Make sure we're at a valid offset
+		plotX = Math.round(plotX);
+
+		// Retrieve data subset
+		relevantData = plotIdentifiersData[plotX];
+		if (relevantData == null) {
+			return;
+		}
+
+		// Retrieve the identifiers
+		identifiers = []
+		$.each(relevantData, function(t) {
+			var record = relevantData[t];
+			identifiers.push(record.id);
+		});
+
+		console.log(identifiers);
+
+	}
+
+	function _UI_plotSection_volume(sectionTitle, plotAreaTitle, originalData){
 
 		// Create the div which contains the plot
 		var plotSection = $("#"+sectionTitle);
@@ -121,12 +144,15 @@
 		// Create the plotArea and append it to the div
 		var plotArea = plotSection.children(".plotArea");
 
-		data = UI_prepareData_volume(data);
+		data = UI_prepareData_volume(originalData);
 
 		// Plot the data
 
 		var plotOptions = {
-			bars: {
+			grid: {
+				clickable: true
+			},
+			points: {
 				show: true
 			},
 			xaxis: {
@@ -146,6 +172,12 @@
 		}
 
 		$.plot("#"+plotAreaTitle, data, plotOptions);
+		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
+			if (item) {
+				positionX = item.datapoint[0]
+		    	UI_showAdditionalData(positionX, originalData);
+		    }
+		})
 	}
 
 	var plotSectionCounter = 0;
@@ -259,7 +291,7 @@
 
 	.panel h2 {
 		font-size: 17px;
-		font-variant: small-caps;	
+		/*font-variant: small-caps;	*/
 		margin: 0px;
 		margin-bottom:15px;
 	}
@@ -383,11 +415,22 @@
 			</div>
 		</td><td valign="top" id="resultsSection">
 
-				<table id="statistics">
-				</div>
 
 			</div>
-		</td></tr></table>
+		</td><td valign="top" style="width: 230px" id="additionalSection">
+
+		<div id="additionalPanel" class="panel" style="float:right">
+
+			<h2>Obama campaign "Doomed to fail" say experts</h2>
+			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../dt;s32.html</a>
+				<a href="http://archive.org">Archived Link &gt;</a></p>
+				<hr />
+			<h2>Troubled Obama campaign riven by scandal</h2>
+			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../0t;ss2.html</a>
+				<a href="http://archive.org">Archived Link &gt;</a></p>
+		</div>
+
+	</td></tr></table>
 
 
 </body></html>
