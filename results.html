@@ -57,7 +57,7 @@
 
 	var showingCumulative  = false; 
 	var showingLogarithmic = false;
-	var onlyRelevant = false;
+	var showOnlyRelevant   = false;
 
 	var displayItem = "volume";
 	var displayMode = "line";
@@ -271,12 +271,12 @@
 		// Compute the data
 		// UI_prepareData_docProperty(data, prefix) 
 		var prefix = "pos_" + displayElem;
-		if(displayElem == "phrases" && onlyRelevant) {
+		if(displayElem == "phrases" && showOnlyRelevant) {
 			prefix += "_rel";
 		}
 		var positiveAxis = UI_prepareData_docProperty(originalData, prefix);
 		var prefix = "neg_" + displayElem;
-		if(displayElem == "phrases" && onlyRelevant) {
+		if(displayElem == "phrases" && showOnlyRelevant) {
 			prefix += "_rel";
 		}
 		var negativeAxis = UI_prepareData_docProperty(originalData, prefix);
@@ -482,14 +482,16 @@
 		// Read form values
 		showingCumulative = false;
 		showingLogarithmic = false;
+		showOnlyRelevant = false;
 		if($('#cumulativeCheck').is(':checked')) {
 			showingCumulative = true;
 		}
 		if($('#logCheck').is(':checked')) {
 			showingLogarithmic = true;
 		}
-
-
+		if($('#relevantCheck').is(':checked')) {
+			showOnlyRelevant = true;
+		}
 
 		for(i = 0; i < plotSectionCounter; i++) {
 			UI_plotSection(i);
@@ -523,6 +525,12 @@
 
 		$("input[type='radio']").change( function () {
 			displayElem = $(this).val();
+			if(displayElem == "phrases") {
+				$("#relevantTable").show();
+			}
+			else {
+				$("#relevantTable").hide();
+			}
 			UI_plotCharts();
 		});
 
@@ -638,6 +646,10 @@
 		text-align: left;
 	}
 
+	.checkColumn {
+		width: 37px;
+	}
+
 	</style>
 </head>
 
@@ -678,8 +690,8 @@
 				<form id="controlForm">
 
 					<table style="text-align:left; width: 100px">
-						<tr><td><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
-						<tr><td><input type="checkbox" disabled="disabled" name="logCheck" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
+						<tr><td class="checkColumn"><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
+						<tr><td class="checkColumn"><input type="checkbox" disabled="disabled" name="logCheck" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
 					</table>
 						<table style="width:60%;" class="radioTable">
 							<tr><th>Points</th><th>Blobs</th></tr>
@@ -693,6 +705,9 @@
 								<td><input type="radio" name="lineRadio" value="phrases" /></td>
 								<td><input type="radio" name="lineRadio" value="volume" checked="checked"/></td>
 							</tr>
+						</table>
+						<table style="text-align:left; width: 100%; display:none" id="relevantTable">
+							<tr><td class="checkColumn"><input type="checkbox" name="relevantCheck" id="relevantCheck"/></td><td style="text-align:left"><label for="relevantCheck">Relevant phrases</label></td></tr>
 						</table>
 				</form>
 			</div>
