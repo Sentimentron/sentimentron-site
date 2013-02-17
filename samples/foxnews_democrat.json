@@ -5,21 +5,7 @@
         "keywords_returned": 1
     }, 
     "overview": {
-        "1219273200000.0": [
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 94, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 4, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 4, 
-                "pos_phrases": 27, 
-                "id": 220620
-            }
-        ], 
-        "1223679600000.0": [
+        "1223717652000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.0, 
@@ -33,21 +19,7 @@
                 "id": 133660
             }
         ], 
-        "1227052800000.0": [
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 51, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 2, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 9, 
-                "id": 50419
-            }
-        ], 
-        "1210287600000.0": [
+        "1183075200000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.0, 
@@ -55,13 +27,41 @@
                 "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
                 "pos_phrases": 3, 
                 "id": 482069
             }
         ], 
-        "1217026800000.0": [
+        "1106611200000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 40, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 11, 
+                "id": 281833
+            }
+        ], 
+        "1124236800000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.19308226803938547, 
+                "neg_phrases": 57, 
+                "neg_phrases_rel": 3, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 6, 
+                "id": 86938
+            }
+        ], 
+        "1162598400000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.0, 
@@ -69,13 +69,69 @@
                 "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
                 "pos_phrases": 3, 
                 "id": 51366
             }
         ], 
-        "1210806000000.0": [
+        "1223957910000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 16, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Crawled", 
+                "pos_sentences": 0, 
+                "pos_phrases": 1, 
+                "id": 140573
+            }
+        ], 
+        "1138924800000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 94, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 4, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 4, 
+                "pos_phrases": 27, 
+                "id": 220620
+            }
+        ], 
+        "1161043200000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 62, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 12, 
+                "id": 328737
+            }
+        ], 
+        "1138579200000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 65, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 12, 
+                "id": 308201
+            }
+        ], 
+        "1210893675000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.0, 
@@ -89,71 +145,7 @@
                 "id": 256237
             }
         ], 
-        "1223938800000.0": [
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 62, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 12, 
-                "id": 328737
-            }, 
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 16, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 1, 
-                "id": 140573
-            }, 
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.19308226803938547, 
-                "neg_phrases": 57, 
-                "neg_phrases_rel": 3, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 6, 
-                "id": 86938
-            }
-        ], 
-        "1216854000000.0": [
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 40, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 11, 
-                "id": 281833
-            }, 
-            {
-                "average_sentence_prob": null, 
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 65, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
-                "pos_sentences": 0, 
-                "pos_phrases": 12, 
-                "id": 308201
-            }
-        ], 
-        "1215298800000.0": [
+        "1215388467000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.0, 
@@ -165,7 +157,23 @@
                 "pos_sentences": 0, 
                 "pos_phrases": 7, 
                 "id": 18520
-            }, 
+            }
+        ], 
+        "1207008000000.0": [
+            {
+                "average_sentence_prob": null, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 51, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 2, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 9, 
+                "id": 50419
+            }
+        ], 
+        "1033430400000.0": [
             {
                 "average_sentence_prob": null, 
                 "average_phrase_prob": 0.13321078196167946, 
@@ -173,7 +181,7 @@
                 "neg_phrases_rel": 2, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
                 "pos_phrases": 0, 
                 "id": 78650

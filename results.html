@@ -46,33 +46,84 @@
 	var showingCumulative  = false; 
 	var showingLogarithmic = false;
 
-	var displayItem = "volume"
-	var displayMode = "line"
+	var displayItem = "volume";
+	var displayMode = "line";
+	var displayElem = "volume";
 
-	function UI_plotSection(sectionTitle, data){
+	var sortFunc = function(a, b) {
+		a = a[0]; b = b[0];
+		if (a > b) return  1;
+		if (a < b) return -1;
+		return 0;
+	};
+
+	var negativeMapFunc = function(a) {
+		return [a[0], -a[1]];
+	};
+
+	function convert_singletonDict(data) {
+		ret = []
+		$.each(data, function(k) {
+			ret.push([k, data[k]])
+		});
+		console.log(ret);
+		return ret; 
+	}
+
+	function UI_prepareData_volume(data) {
+		var ret_crawled = {}; ret_certain = {}; ret_uncertain = {};
+		$.each(data, function(t) {
+			$.each(data[t], function(d) {
+				ret = null;
+				if(data[t][d].date_method == "Crawled")
+					ret = ret_crawled
+				if(data[t][d].date_method == "Certain")
+					ret = ret_certain
+				if(data[t][d].date_method == "Uncertain")
+					ret = ret_uncertain
+				if(t in ret) {
+					ret[t] = ret[t] + 1;
+				}
+				else {
+					ret[t] = 1;
+				}
+			})
+		});
+
+		var cnv = convert_singletonDict;
+		return [
+				{
+					label: "Crawled",
+					data : cnv(ret_crawled)
+				},
+				{
+					label: "Certain",
+					data : cnv(ret_certain)
+				},
+				{
+					label: "Uncertain",
+					data : cnv(ret_crawled)
+				}
+			];
+
+	}
+
+	function UI_prepareData(data) {
+		if(displayElem == "volume") {
+			return UI_prepareData_volume(data);
+		}
+	}
+
+	function _UI_plotSection(sectionTitle, plotAreaTitle, data){
 
 		// Create the div which contains the plot
-		var plotSection = $("#chartTemplate");
+		var plotSection = $("#"+sectionTitle);
 
 		// Create the plotArea and append it to the div
-		var plotArea = $("#plotArea");
+		var plotArea = plotSection.children(".plotArea");
 
-		// Change the title 
-		var title = plotSection.children('h1:first');
-		title.text(sectionTitle);
-
-		var sortFunc = function(a, b) {
-			a = a[0]; b = b[0];
-			if (a > b) return  1;
-			if (a < b) return -1;
-			return 0;
-		};
-
-		var negativeMapFunc = function(a) {
-			return [a[0], -a[1]];
-		};
-
-		neg_sentences = data.neg_sentences.map(negativeMapFunc)
+		data = UI_prepareData(data);
+		console.log(data);
 
 		// Plot the data
 
@@ -91,21 +142,22 @@
 				axisLabel: 'Articles / day',
             	axisLabelUseCanvas: true,
             	axisLabelFontSizePixels: 10,
-            	autoscale: true
+            	autoscale: displayElem != "volume"
 			},
-			'colors': ['#99BBBB','#FFBBBB']
+			//'colors': ['#99BBBB','#FFBBBB']
 		}
 
-		$.plot("#plotArea", [data.pos_sentences.sort(sortFunc), neg_sentences.sort(sortFunc)], plotOptions);
+		$.plot("#"+plotAreaTitle, data, plotOptions);
 	}
 
 	var plotSectionCounter = 0;
 	var plotAreaInformation = {}
 
-	function UI_plotSections(sectionId) {
-		sectionTitle = "plotSection"+sectionId;
+	function UI_plotSection(sectionId) {
+		sectionTitle = "plotSection"+(sectionId+1);
+		plotAreaTitle = "plotArea" + (sectionId+1);
 		data = plotAreaInformation[sectionId];
-		UI_plotSection(sectionTitle, data);
+		_UI_plotSection(sectionTitle, plotAreaTitle, data);
 	}
 
 	function UI_addPlotSection(title, data) {
@@ -129,7 +181,7 @@
 		appendTo.append(plotSectionDiv);
 
 		// Update internal records 
-		plotAreaInformation[plotSectionCounter] = data
+		plotAreaInformation[plotSectionCounter-1] = data
 	}
 
 
@@ -143,13 +195,17 @@
 		var infoSection = data.info;
 		var overviewSection = data.overview;
 
+		console.log(data);
+
 		UI_addPlotSection("Overview", overviewSection);
 
 		$.each(data.details, function(index, item){
 			UI_addPlotSection(index, item);
 		})
 
-		UI_plotSection("Overview", overviewSection);
+		UI_plotCharts();
+
+		//UI_plotSection("Overview", overviewSection);
 	}
 
 	$(document).ready(function() {
@@ -329,13 +385,6 @@
 				<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
 			</div>
 		</td><td valign="top" id="resultsSection">
-
-			<div id="chartTemplate" class="panel resultsPanel">
-
-				<div class="plotAreaPadding">
-				<div id="plotArea" class="plotArea">
-				</div>
-			</div>
 
 				<table id="statistics">
 				</div>
