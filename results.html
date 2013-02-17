@@ -35,8 +35,17 @@
 			"samples/apple_computer.json"
 		]
 
+		var extraTestFiles = [
+			"samples/extra_headline.json",
+			"samples/extra_noheadline.json"
+		]
+
 		function getResultURL() {
 			return chooseRandomElem(resultTestFiles);
+		}
+
+		function getExtraURL() {
+			return chooseRandomElem(extraTestFiles);
 		}
 
 	</script>
@@ -49,6 +58,15 @@
 	var displayItem = "volume";
 	var displayMode = "line";
 	var displayElem = "volume";
+
+	// General AJAX functions to make the application more responsive
+	$().ajaxStart(function(){
+	   $('body').css('cursor', 'wait');
+	});
+
+	$().ajaxStop(function(){
+	   $('body').css('cursor', 'auto');
+	});
 
 	var sortFunc = function(a, b) {
 		a = a[0]; b = b[0];
@@ -113,6 +131,49 @@
 		}
 	}
 
+
+	function UI_showAdditionalDataPanel(identifier, information) {
+		var addPanel = $("#additionalPanel");
+		var panelTemplate = $('<p><a class="originalUrl"/><br /><a class="archivedUrl">Archived link &gt;</a></p><hr />');
+
+		// If it's got a headline, make sure we show it
+		var headline = information['headline'];
+		var headlineElem = null;
+		if(headline != null) {
+			headlineElem = $('<h2 class="headline" />');
+			headlineElem.text(headline);
+		}
+
+		// Display the original URL and archived url
+		var origLink = panelTemplate.children('.originalUrl');
+		origLink.attr("href","http://"+information.url);
+
+		var archiveLink = panelTemplate.children('.archivedUrl');
+		archiveLink.attr("href","http://"+information.archive_link);
+
+		// Generate a snippet of the URL to display 
+		var origUrl = information.url;
+		if (origUrl.length > 32) {
+			var urlArray = origUrl.split("/");
+			var newUrl   = urlArray[0] + "/.../" + urlArray[urlArray.length-1];
+			origLink.text(newUrl);
+		}
+		else {
+			origLink.text(origUrl);
+		}
+
+		var panelDiv = $('<div />');
+		if(headlineElem != null) {
+			//headlineElem.append(panelTemplate);
+			panelDiv.html(headlineElem);
+			panelDiv.append(panelTemplate);
+		}
+		else {
+			panelDiv.html(panelTemplate);
+		}
+		addPanel.append(panelDiv);
+	}
+
 	function UI_showAdditionalData(plotX, plotIdentifiersData) {
 		var relevantData; 
 		
@@ -132,8 +193,27 @@
 			identifiers.push(record.id);
 		});
 
-		console.log(identifiers);
+		// Locate the additional information panel 
+		var addPanel = $("#additionalPanel");
+		addPanel.html("<p>Loading...</p>");
+		var cleared = false;
 
+		$.each(identifiers, function(i){
+			$.ajax({
+			"dataType": "json",
+			"url": getExtraURL(),
+			"success": function(response) {
+				if(!cleared) {
+					addPanel.html("");
+					cleared = true;
+				}
+				UI_showAdditionalDataPanel(i, response);
+			},
+			"error": function() {
+				addPanel.html("<p>There was a problem loading additional information.</p>")
+			}
+		})
+		})
 	}
 
 	function _UI_plotSection_volume(sectionTitle, plotAreaTitle, originalData){
@@ -223,6 +303,7 @@
 	}
 
 	var RPC_consumeInput = function(data){
+	   $('html').addClass('busy');
 		var infoSection = data.info;
 		var overviewSection = data.overview;
 
@@ -233,11 +314,14 @@
 		})
 
 		UI_plotCharts();
+	   $('html').removeClass('busy');
 
 		//UI_plotSection("Overview", overviewSection);
 	}
 
 	$(document).ready(function() {
+
+		$('html').addClass('busy');
 
 		// Display the main page body 
 		$("#wrapper").show();
@@ -257,10 +341,20 @@
 
 	});
 
+	$(function(){  
+	  $("html").bind("ajaxStart", function(){  
+	     $(this).addClass('busy');  
+	   }).bind("ajaxStop", function(){  
+	     $(this).removeClass('busy');  
+	   });  
+	});
+
 	</script>
 
 	<style type="text/css">
-
+	html.busy, html.busy * {  
+	  cursor: wait !important;  
+	}  
 	.panel {
 		background: rgba(54, 54, 54, 0.9);
 		width:200px;
@@ -421,13 +515,17 @@
 
 		<div id="additionalPanel" class="panel" style="float:right">
 
+			<div>
 			<h2>Obama campaign "Doomed to fail" say experts</h2>
 			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../dt;s32.html</a>
 				<a href="http://archive.org">Archived Link &gt;</a></p>
 				<hr />
+			</div>
+			<div>
 			<h2>Troubled Obama campaign riven by scandal</h2>
 			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../0t;ss2.html</a>
 				<a href="http://archive.org">Archived Link &gt;</a></p>
+			</div>
 		</div>
 
 	</td></tr></table>
