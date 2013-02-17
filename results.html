@@ -157,15 +157,25 @@
 			});
 		}
 		return ret;
-
 	}
 
-	function UI_prepareData(data) {
-		if(displayElem == "volume") {
-			return UI_prepareData_volume(data);
-		}
-	}
+	function UI_prepareData_docProperty(data, prefix) {
+		var ret = {}
+		$.each(data, function(t) {
+			$.each(data[t], function(d){
+				rec = data[t][d]
+				attr = rec[prefix]
+				console.log([rec[prefix], prefix, rec])
+				if(t in ret) {
+					ret[t] += attr;
+				} else {
+					ret[t] = attr;
+				}
+			});
+		});
 
+		return convert_singletonDict(ret).sort(sortFunc);
+	}
 
 	function UI_showAdditionalDataPanel(identifier, information) {
 		var addPanel = $("#additionalPanel");
@@ -251,6 +261,96 @@
 		})
 	}
 
+	function _UI_plotSection_docPrp(sectionTitle, plotAreaTitle, originalData) {
+
+		// Get the plot area
+		var plotSection = $("#"+sectionTitle);
+		var plotArea = plotSection.children(".plotArea");
+
+		// Compute the data
+		// UI_prepareData_docProperty(data, prefix) 
+		var prefix = "pos_" + displayElem;
+		if(displayElem == "phrases" && onlyRelevant) {
+			prefix += "_rel";
+		}
+		var positiveAxis = UI_prepareData_docProperty(originalData, prefix);
+		var prefix = "neg_" + displayElem;
+		if(displayElem == "phrases" && onlyRelevant) {
+			prefix += "_rel";
+		}
+		var negativeAxis = UI_prepareData_docProperty(originalData, prefix);
+		negativeAxis = negativeAxis.map(negativeMapFunc);
+
+		var yAxisLabel = displayElem;
+		if(showingCumulative) {
+			positiveAxis = accumulate(positiveAxis);
+			negativeAxis = accumulate(negativeAxis);
+		}
+
+		var plotOptions = {
+			grid: {
+				clickable: true,
+				hoverable: true
+			},
+			points: {
+				show: true
+			},
+			bars: {
+				show: !showingCumulative
+			},
+			lines : {
+				show: showingCumulative
+			},
+			xaxis: {
+				mode: 'time',
+		        axisLabel: 'Date',
+	            axisLabelUseCanvas: true,
+	            axisLabelFontSizePixels: 10,
+	            axisLabelFontFamily: 'Arial',
+	            min: 933430400000
+	  			},
+			yaxis: {
+				axisLabel: yAxisLabel,
+            	axisLabelUseCanvas: true,
+            	axisLabelFontSizePixels: 10,
+            	autoscale: true,
+			},	
+			zoom: {
+            	interactive: true
+        	},
+        	pan: {
+            	interactive: true
+        	}
+		}
+
+		// Fix for weird stacking behaviour
+		if(!showingCumulative) {
+			plotOptions['series'] = {}
+			plotOptions['series']['stacked'] = true;
+		}
+
+		// Plot the graph
+		$.plot("#"+plotAreaTitle, data, plotOptions);
+
+		// Register for additional data services
+		var dragging = false;
+		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
+			if (item && !dragging) {
+				positionX = item.datapoint[0]
+		    	UI_showAdditionalData(positionX, originalData);
+		    }
+		});
+
+		// These functions must be defined for some reason
+		$('#'+plotAreaTitle + " canvas").bind('dragstart', function() {
+			dragging = true;
+		});
+		$('#'+plotAreaTitle + " canvas").bind('dragend', function() {
+			setTimeout(function() {dragging = false;}, 100);
+		});
+		$('#'+plotAreaTitle + " canvas").bind('plotzoom', function(event, plot){});
+	}
+
 	function _UI_plotSection_volume(sectionTitle, plotAreaTitle, originalData){
 
 		// Create the div which contains the plot
@@ -272,6 +372,7 @@
 		}
 
 		var yAxisTicks = null;
+
 
 		var plotOptions = {
 			grid: {
@@ -311,6 +412,11 @@
 			//'colors': ['#99BBBB','#FFBBBB']
 		}
 
+		if(!showingCumulative) {
+			plotOptions['series'] = {}
+			plotOptions['series']['stacked'] = true;
+		}
+
 		$.plot("#"+plotAreaTitle, data, plotOptions);
 		var dragging = false;
 		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
@@ -338,6 +444,8 @@
 		data = plotAreaInformation[sectionId];
 		if(displayElem == "volume")
 			_UI_plotSection_volume(sectionTitle, plotAreaTitle, data);
+		else
+			_UI_plotSection_docPrp(sectionTitle, plotAreaTitle, data);
 	}
 
 	function UI_addPlotSection(title, data) {
@@ -376,6 +484,9 @@
 		if($('#logCheck').is(':checked')) {
 			showingLogarithmic = true;
 		}
+
+
+
 		for(i = 0; i < plotSectionCounter; i++) {
 			UI_plotSection(i);
 		}
@@ -403,6 +514,11 @@
 		$('html').addClass('busy');
 
 		$("input[type='checkbox']").change( function() {
+			UI_plotCharts();
+		});
+
+		$("input[type='radio']").change( function () {
+			displayElem = $(this).val();
 			UI_plotCharts();
 		});
 
@@ -568,9 +684,9 @@
 						<table id="lineOptionsTable" class="radioTable">
 							<tr><th>Documents</th><th>Sentences</th><th>Phrases</th><th>Volume</th></tr>
 							<tr>
-								<td><input type="radio" name="lineRadio" value="documents" checked="checked"/></td>
-								<td><input type="radio" name="lineRadio" value="phrases"   checked="checked"/></td>
-								<td><input type="radio" name="lineRadio" value="sentences" checked="checked"/></td>
+								<td><input type="radio" name="lineRadio" value="documents" /></td>
+								<td><input type="radio" name="lineRadio" value="sentences"   /></td>
+								<td><input type="radio" name="lineRadio" value="phrases" /></td>
 								<td><input type="radio" name="lineRadio" value="volume" checked="checked"/></td>
 							</tr>
 						</table>
