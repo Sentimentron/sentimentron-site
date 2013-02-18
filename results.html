@@ -35,8 +35,9 @@
 			"samples/foxnews.json",
 			"samples/obama.json",
 			"samples/foxnews_democrat.json",
-			"samples/apple_computer.json"
-		]
+			"samples/apple_computer.json",
+			"samples/guardian.json"
+		];
 
 		var extraTestFiles = [
 			"samples/extra_headline.json",
@@ -58,6 +59,8 @@
 	var showingCumulative  = false; 
 	var showingLogarithmic = false;
 	var showOnlyRelevant   = false;
+
+	var UIshowRelevantPanel = false;
 
 	var displayItem = "volume";
 	var displayMode = "line";
@@ -525,7 +528,12 @@
 	var RPC_consumeInput = function(data){
 	   $('html').addClass('busy');
 		var infoSection = data.info;
+		if(!('result_version' in infoSection) || infoSection.result_version != '1') {
+			alert("Unsupported result format.");
+			return;
+		} 
 		var overviewSection = data.overview;
+		UIshowRelevantPanel = infoSection.using_keywords;
 
 		UI_addPlotSection("Overview", overviewSection);
 
@@ -550,7 +558,9 @@
 		$("input[type='radio']").change( function () {
 			displayElem = $(this).val();
 			if(displayElem == "phrases") {
-				$("#relevantTable").show();
+				if(UIshowRelevantPanel) {
+					$("#relevantTable").show();
+				}
 			}
 			else {
 				$("#relevantTable").hide();
