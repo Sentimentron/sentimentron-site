@@ -39,6 +39,8 @@
 			"samples/guardian.json"
 		];
 
+		var resultTestFiles = ['samples/foxnews_democrat.json'];
+
 		var extraTestFiles = [
 			"samples/extra_headline.json",
 			"samples/extra_noheadline.json"
@@ -473,6 +475,7 @@
 		sectionTitle = "plotSection"+(sectionId+1);
 		plotAreaTitle = "plotArea" + (sectionId+1);
 		data = plotAreaInformation[sectionId];
+
 		if(displayElem == "volume")
 			_UI_plotSection_volume(sectionTitle, plotAreaTitle, data);
 		else
@@ -538,7 +541,8 @@
 		UI_addPlotSection("Overview", overviewSection);
 
 		$.each(data.details, function(index, item){
-			UI_addPlotSection(index, item);
+			console.log(item['docs']);
+			UI_addPlotSection(index, item.docs);
 		})
 
 		UI_plotCharts();
