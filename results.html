@@ -487,6 +487,16 @@
 	var plotSectionCounter = 0;
 	var plotAreaInformation = {}
 
+	function _UI_plotSection_additional(sectionTitle, originalData) {
+		// Find the div which contains the plot
+		var plotSection = $("#"+sectionTitle);
+
+		// Display the additional details table 
+		var additionalTable = plotSection.find(".detailsTable");
+		additionalTable.show();
+			
+	}
+
 	function UI_plotSection(sectionId) {
 		sectionTitle = "plotSection"+(sectionId+1);
 		plotAreaTitle = "plotArea" + (sectionId+1);
@@ -499,12 +509,16 @@
 			_UI_plotSection_volume(sectionTitle, plotAreaTitle, data);
 		else
 			_UI_plotSection_docPrp(sectionTitle, plotAreaTitle, data);
+
+		if('docs' in data) {
+			_UI_plotSection_additional(sectionTitle, data);
+		}
 	}
 
 	function UI_addPlotSection(title, data) {
 		plotSectionCounter++;
 		// Create the scaffold
-		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
+		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class\"linkPlot\" /></td></tr><tr><td>barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
 
 		// Update the section title
 		var plotSectionTitle = plotSectionDiv.find('h1');
@@ -709,6 +723,11 @@
 
 	.checkColumn {
 		width: 37px;
+	}
+
+	.detailsTable {
+		width:100%;
+		display:none;
 	}
 
 	</style>
