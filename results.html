@@ -290,6 +290,14 @@
 		var plotSection = $("#"+sectionTitle);
 		var plotArea = plotSection.children(".plotArea");
 
+		var data;
+		if('docs' in originalData) {
+			data = originalData.docs; 
+		}
+		else {
+			data = originalData;
+		}
+
 		// Compute the data
 		// UI_prepareData_docProperty(data, prefix) 
 		var prefix = "pos_" + displayElem;
@@ -298,16 +306,16 @@
 		}
 		var positiveAxis = null, negativeAxis = null;
 		if(displayElem == "documents")  {
-			positiveAxis = UI_prepareData_docLabel(originalData, 1);
-			negativeAxis = UI_prepareData_docLabel(originalData,-1);
+			positiveAxis = UI_prepareData_docLabel(data, 1);
+			negativeAxis = UI_prepareData_docLabel(data,-1);
 		}
 		else {
-			positiveAxis = UI_prepareData_docProperty(originalData, prefix);
+			positiveAxis = UI_prepareData_docProperty(data, prefix);
 			var prefix = "neg_" + displayElem;
 			if(displayElem == "phrases" && showOnlyRelevant) {
 				prefix += "_rel";
 			}
-			negativeAxis = UI_prepareData_docProperty(originalData, prefix);
+			negativeAxis = UI_prepareData_docProperty(data, prefix);
 		}
 		negativeAxis = negativeAxis.map(negativeMapFunc);
 
@@ -392,7 +400,15 @@
 		// Create the plotArea and append it to the div
 		var plotArea = plotSection.children(".plotArea");
 
-		data = UI_prepareData_volume(originalData);
+		var data;
+		if('docs' in originalData) {
+			data = originalData.docs; 
+		}
+		else {
+			data = originalData;
+		}
+
+		data = UI_prepareData_volume(data);
 
 		// Plot the data
 
@@ -474,7 +490,10 @@
 	function UI_plotSection(sectionId) {
 		sectionTitle = "plotSection"+(sectionId+1);
 		plotAreaTitle = "plotArea" + (sectionId+1);
+		console.log(plotAreaInformation);
 		data = plotAreaInformation[sectionId];
+		console.log("UI_plotSection");
+		console.log(data);
 
 		if(displayElem == "volume")
 			_UI_plotSection_volume(sectionTitle, plotAreaTitle, data);
@@ -490,6 +509,9 @@
 		// Update the section title
 		var plotSectionTitle = plotSectionDiv.find('h1');
 		plotSectionTitle.text(title)
+
+		console.log("UI_addPlotSection");
+		console.log(data);
 
 		// Find the scaffold's plotArea div
 		var plotArea = plotSectionDiv.find('.plotArea');
@@ -540,9 +562,10 @@
 
 		UI_addPlotSection("Overview", overviewSection);
 
+		console.log("RPC_consumeInput");
 		$.each(data.details, function(index, item){
-			console.log(item['docs']);
-			UI_addPlotSection(index, item.docs);
+			console.log([index,item]);
+			UI_addPlotSection(index, item);
 		})
 
 		UI_plotCharts();
