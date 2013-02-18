@@ -166,7 +166,6 @@
 			$.each(data[t], function(d){
 				rec = data[t][d]
 				attr = rec[prefix]
-				console.log([rec[prefix], prefix, rec])
 				if(t in ret) {
 					ret[t] += attr;
 				} else {
@@ -175,6 +174,24 @@
 			});
 		});
 
+		return convert_singletonDict(ret).sort(sortFunc);
+	}
+
+	function UI_prepareData_docLabel(data, label) {
+		var ret = {}
+		$.each(data, function(t) {
+			$.each(data[t], function(d){
+				rec = data[t][d]
+				if (rec['label'] == label) {
+					if(t in ret) {
+						ret[t] += 1;
+					}
+					else {
+						ret[t]  = 1;
+					}
+				}
+			});
+		});
 		return convert_singletonDict(ret).sort(sortFunc);
 	}
 
@@ -274,12 +291,19 @@
 		if(displayElem == "phrases" && showOnlyRelevant) {
 			prefix += "_rel";
 		}
-		var positiveAxis = UI_prepareData_docProperty(originalData, prefix);
-		var prefix = "neg_" + displayElem;
-		if(displayElem == "phrases" && showOnlyRelevant) {
-			prefix += "_rel";
+		var positiveAxis = null, negativeAxis = null;
+		if(displayElem == "documents")  {
+			positiveAxis = UI_prepareData_docLabel(originalData, 1);
+			negativeAxis = UI_prepareData_docLabel(originalData,-1);
 		}
-		var negativeAxis = UI_prepareData_docProperty(originalData, prefix);
+		else {
+			positiveAxis = UI_prepareData_docProperty(originalData, prefix);
+			var prefix = "neg_" + displayElem;
+			if(displayElem == "phrases" && showOnlyRelevant) {
+				prefix += "_rel";
+			}
+			negativeAxis = UI_prepareData_docProperty(originalData, prefix);
+		}
 		negativeAxis = negativeAxis.map(negativeMapFunc);
 
 		var yAxisLabel = displayElem;
