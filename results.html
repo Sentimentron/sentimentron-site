@@ -33,11 +33,11 @@
 		//
 
 		var resultTestFiles = [
-//			"samples/foxnews.json",
-//			"samples/obama.json",
-//			"samples/foxnews_democrat.json",
-			"samples/apple_computer.json"
-//			"samples/guardian.json"
+			"samples/foxnews.json",
+			"samples/obama.json",
+			"samples/foxnews_democrat.json",
+			"samples/apple_computer.json",
+			"samples/guardian.json"
 		];
 
 		//var resultTestFiles = ['samples/foxnews_democrat.json'];
@@ -288,7 +288,6 @@
 	function _UI_plotSection_docPrp(sectionTitle, plotAreaTitle, originalData) {
 
 		// Get the plot area
-		alert(plotAreaTitle);
 		var plotSection = $("#"+sectionTitle);
 		var plotArea = plotSection.children(".plotArea");
 
@@ -627,7 +626,6 @@
 		console.log(plotAreaInformation);
 
 		$.each(plotAreaInformation, function(t){
-			alert(t);
 			UI_plotSection(t);
 		});
 
@@ -661,11 +659,12 @@
 
 		$('html').addClass('busy');
 
+		$('form').each(function() { this.reset() });
+
+
 		$("input[type='checkbox']").change( function() {
 			UI_plotCharts();
 		});
-
-		$('form').each(function() { this.reset() });
 
 		$("input[type='radio']").change( function () {
 			displayElem = $(this).val();
@@ -854,10 +853,6 @@
 					<table style="text-align:left; width: 100%">
 						<tr><td class="checkColumn"><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
 					</table>
-						<table style="width:60%;" class="radioTable">
-							<tr><th>Points</th><th>Blobs</th></tr>
-							<tr><td><input type="radio" name="displayRadio" value="lines" /></td><td><input type="radio" name="displayRadio" value="dots" /></td></tr>
-						</table>
 						<table id="lineOptionsTable" class="radioTable">
 							<tr><th>Documents</th><th>Sentences</th><th>Phrases</th><th>Volume</th></tr>
 							<tr>
