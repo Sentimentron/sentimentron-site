@@ -7,6 +7,7 @@
 	<script src="assets/jquery-1.9.1.min.js"></script>
 	<script src="assets/jquery.event.drag-2.2.js"></script>
 	<script src="flot/jquery.flot.js"></script>
+	<script src="flot/jquery.flot.pie.js"></script>
 	<script src="flot/jquery.flot.stack.js"></script>
 	<script src="flot/jquery.flot.axislabels.js"></script>
 	<script src="flot/jquery.flot.autoscaling.js"></script>
@@ -407,7 +408,9 @@
 			// Fill in the table values
 			var coverageInfo = plotSection.find('.coverageInfo');
 			var siteTerms    = plotSection.find('.siteTerms');
+			var linkPlot 	 = plotSection.find('.linkPlot');
 
+			// Produce a coverage estimate 
 			if(originalData.coverage < 1.00) {
 				coverageInfo.text("< 1");
 			}
@@ -415,6 +418,7 @@
 				coverageInfo.text(originalData.coverage);
 			}
 
+			// Fill in the site term list
 			var oddTerm = false;
 			var termSpans = [];
 			$.each(originalData.terms, function(t) {
@@ -432,6 +436,25 @@
 				if (i != termSpans.length-1)
 					siteTerms.append(", ");
 			}
+
+			// Produce the plot of things the site links to
+			var linkChartData = []
+			$.each(originalData['external'], function(t) {
+				var record = {'label': t, 'data': originalData['external'][t]};
+				linkChartData.push(record);
+			});
+
+			$.plot(linkPlot, linkChartData, {
+				series: {
+					pie: {
+						show: true
+					}
+				},
+				legend: {
+					labelBoxBorderColor: "none"
+				}
+			});
+
 		}
 		else {
 			data = originalData;
@@ -547,7 +570,7 @@
 	function UI_addPlotSection(title, data) {
 		plotSectionCounter++;
 		// Create the scaffold
-		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class\"linkPlot\" /></td></tr><tr><td class=\"siteTerms\">barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
+		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class=\"linkPlot\" /></td></tr><tr><td class=\"siteTerms\">barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
 
 		// Update the section title
 		var plotSectionTitle = plotSectionDiv.find('h1');
@@ -757,6 +780,11 @@
 	.detailsTable {
 		width:100%;
 		display:none;
+	}
+
+	.linkPlot {
+		width: 200px;
+		height: 200px;
 	}
 
 	</style>
