@@ -403,6 +403,35 @@
 		var data;
 		if('docs' in originalData) {
 			data = originalData.docs; 
+
+			// Fill in the table values
+			var coverageInfo = plotSection.find('.coverageInfo');
+			var siteTerms    = plotSection.find('.siteTerms');
+
+			if(originalData.coverage < 1.00) {
+				coverageInfo.text("< 1");
+			}
+			else {
+				coverageInfo.text(originalData.coverage);
+			}
+
+			var oddTerm = false;
+			var termSpans = [];
+			$.each(originalData.terms, function(t) {
+				var spanTemplate = $("<span class=\"siteTerm\" />");
+				oddTerm = !oddTerm;
+				if(oddTerm) {
+					spanTemplate.addClass("odd");
+				}
+				spanTemplate.text(originalData.terms[t]);
+				termSpans.push(spanTemplate);
+			});
+
+			for(i = 0; i < termSpans.length; i++) {
+				siteTerms.append(termSpans[i])
+				if (i != termSpans.length-1)
+					siteTerms.append(", ");
+			}
 		}
 		else {
 			data = originalData;
@@ -518,7 +547,7 @@
 	function UI_addPlotSection(title, data) {
 		plotSectionCounter++;
 		// Create the scaffold
-		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class\"linkPlot\" /></td></tr><tr><td>barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
+		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class\"linkPlot\" /></td></tr><tr><td class=\"siteTerms\">barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
 
 		// Update the section title
 		var plotSectionTitle = plotSectionDiv.find('h1');
