@@ -40,7 +40,7 @@
 			"samples/guardian.json"
 		];
 
-		var resultTestFiles = ['samples/foxnews_democrat.json'];
+		//var resultTestFiles = ['samples/foxnews_democrat.json'];
 
 		var extraTestFiles = [
 			"samples/extra_headline.json",
@@ -60,8 +60,8 @@
 	<script>
 
 	var showingCumulative  = false; 
-	var showingLogarithmic = false;
 	var showOnlyRelevant   = false;
+	var showingNormal      = false;
 
 	var UIshowRelevantPanel = false;
 
@@ -104,11 +104,7 @@
 				accum += data[k][1]
 			else
 				accum = data[k][1]
-			if(showingLogarithmic)
-				pushVal = Math.log(accum+0.0001)/Math.log(10)
-			else
-				pushVal = accum
-			ret.push([data[k][0], pushVal])
+			ret.push([data[k][0], accum])
 		});
 		return ret;
 	}
@@ -172,6 +168,10 @@
 			$.each(data[t], function(d){
 				rec = data[t][d]
 				attr = rec[prefix]
+				if(showingNormal) {
+					console.log(data[t]);
+					attr = attr/data[t].length
+				}
 				if(t in ret) {
 					ret[t] += attr;
 				} else {
@@ -404,57 +404,6 @@
 		var data;
 		if('docs' in originalData) {
 			data = originalData.docs; 
-
-			// Fill in the table values
-			var coverageInfo = plotSection.find('.coverageInfo');
-			var siteTerms    = plotSection.find('.siteTerms');
-			var linkPlot 	 = plotSection.find('.linkPlot');
-
-			// Produce a coverage estimate 
-			if(originalData.coverage < 1.00) {
-				coverageInfo.text("< 1");
-			}
-			else {
-				coverageInfo.text(originalData.coverage);
-			}
-
-			// Fill in the site term list
-			var oddTerm = false;
-			var termSpans = [];
-			$.each(originalData.terms, function(t) {
-				var spanTemplate = $("<span class=\"siteTerm\" />");
-				oddTerm = !oddTerm;
-				if(oddTerm) {
-					spanTemplate.addClass("odd");
-				}
-				spanTemplate.text(originalData.terms[t]);
-				termSpans.push(spanTemplate);
-			});
-
-			for(i = 0; i < termSpans.length; i++) {
-				siteTerms.append(termSpans[i])
-				if (i != termSpans.length-1)
-					siteTerms.append(", ");
-			}
-
-			// Produce the plot of things the site links to
-			var linkChartData = []
-			$.each(originalData['external'], function(t) {
-				var record = {'label': t, 'data': originalData['external'][t]};
-				linkChartData.push(record);
-			});
-
-			$.plot(linkPlot, linkChartData, {
-				series: {
-					pie: {
-						show: true
-					}
-				},
-				legend: {
-					labelBoxBorderColor: "none"
-				}
-			});
-
 		}
 		else {
 			data = originalData;
@@ -467,9 +416,6 @@
 		var yAxisLabel = "Articles / Day"
 		if(showingCumulative) {
 			yAxisLabel = "Total Articles"
-		}
-		if(showingLogarithmic) {
-			yAxisLabel += " (log scale)"
 		}
 
 		var yAxisTicks = null;
@@ -539,12 +485,72 @@
 	var plotSectionCounter = 0;
 	var plotAreaInformation = {}
 
+	function UI_getRandomColour() {
+	    var l = 'ABCDEF0123456789ABCDEF'.split('');
+	    var ret = '#';
+	    for (var i = 0; i < 6; i++ ) {
+	        ret += l[Math.round(Math.random() * (l.length-1))];
+	    }
+	    return ret;
+	}
+
 	function _UI_plotSection_additional(sectionTitle, originalData) {
 		// Find the div which contains the plot
 		var plotSection = $("#"+sectionTitle);
 
 		// Display the additional details table 
 		var additionalTable = plotSection.find(".detailsTable");
+
+		// Fill in the table values
+		var coverageInfo = additionalTable.find('.coverageInfo');
+		var siteTerms    = additionalTable.find('.siteTerms');
+		var linkPlot 	 = additionalTable.find('.linkPlot');
+
+		// Produce a coverage estimate 
+		if(originalData.coverage < 1.00) {
+			coverageInfo.text("< 1");
+		}
+		else {
+			coverageInfo.text(originalData.coverage);
+		}
+
+		// Fill in the site term list
+		var oddTerm = false;
+		var termSpans = [];
+		$.each(originalData.terms, function(t) {
+			var spanTemplate = $("<span class=\"siteTerm\" />");
+			oddTerm = !oddTerm;
+			if(oddTerm) {
+				spanTemplate.addClass("odd");
+			}
+			spanTemplate.text(originalData.terms[t]);
+			termSpans.push(spanTemplate);
+		});
+
+		for(i = 0; i < termSpans.length; i++) {
+			siteTerms.append(termSpans[i])
+			if (i != termSpans.length-1)
+				siteTerms.append(", ");
+		}
+
+		// Produce the plot of things the site links to
+		var linkChartData = []
+		$.each(originalData['external'], function(t) {
+			var record = {'label': t, 'data': originalData['external'][t], 'color': UI_getRandomColour()};
+			linkChartData.push(record);
+		});
+
+		$.plot(linkPlot, linkChartData, {
+			series: {
+				pie: {
+					show: true
+				}
+			},
+			legend: {
+				labelBoxBorderColor: "none"
+			}
+		});
+
 		additionalTable.show();
 			
 	}
@@ -565,6 +571,10 @@
 		if('docs' in data) {
 			_UI_plotSection_additional(sectionTitle, data);
 		}
+	}
+
+	function UI_plotSectionAuxillary(plotSection, originalData) {
+
 	}
 
 	function UI_addPlotSection(title, data) {
@@ -599,13 +609,13 @@
 
 		// Read form values
 		showingCumulative = false;
-		showingLogarithmic = false;
-		showOnlyRelevant = false;
+		showingNormal     = false;
+		showOnlyRelevant  = false;
 		if($('#cumulativeCheck').is(':checked')) {
 			showingCumulative = true;
 		}
-		if($('#logCheck').is(':checked')) {
-			showingLogarithmic = true;
+		if($('#normalCheck').is(':checked')) {
+			showingNormal = true;
 		}
 		if($('#relevantCheck').is(':checked')) {
 			showOnlyRelevant = true;
@@ -647,6 +657,8 @@
 		$("input[type='checkbox']").change( function() {
 			UI_plotCharts();
 		});
+
+		$('form').each(function() { this.reset() });
 
 		$("input[type='radio']").change( function () {
 			displayElem = $(this).val();
@@ -826,9 +838,9 @@
 			<div id="controlPanel" class="panel">
 				<form id="controlForm">
 
-					<table style="text-align:left; width: 100px">
+					<table style="text-align:left; width: 100%">
 						<tr><td class="checkColumn"><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
-						<tr><td class="checkColumn"><input type="checkbox" disabled="disabled" name="logCheck" id="logCheck" /></td><td><label for="logCheck">Log scale</label></td></tr>
+						<tr><td class="checkColumn"><input type="checkbox" name="normalCheck" id="normalCheck" /></td><td><label for="normalCheck">Normalize by volume</label></td></tr>
 					</table>
 						<table style="width:60%;" class="radioTable">
 							<tr><th>Points</th><th>Blobs</th></tr>
@@ -840,7 +852,7 @@
 								<td><input type="radio" name="lineRadio" value="documents" /></td>
 								<td><input type="radio" name="lineRadio" value="sentences"   /></td>
 								<td><input type="radio" name="lineRadio" value="phrases" /></td>
-								<td><input type="radio" name="lineRadio" value="volume" checked="checked"/></td>
+								<td><input type="radio" name="lineRadio" value="volume" checked="checked" id="volumeRadio"/></td>
 							</tr>
 						</table>
 						<table style="text-align:left; width: 100%; display:none" id="relevantTable">
