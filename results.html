@@ -664,11 +664,17 @@
 			displayElem = $(this).val();
 			if(displayElem == "phrases") {
 				if(UIshowRelevantPanel) {
-					$("#relevantTable").show();
+					$("#relevantRow").show();
 				}
 			}
 			else {
-				$("#relevantTable").hide();
+				$("#relevantRow").hide();
+			}
+			if(displayElem == "phrases" || displayElem == "sentences") {
+				$("#normalRow").show();
+			}
+			else {
+				$("#normalRow").hide();
 			}
 			UI_plotCharts();
 		});
@@ -840,7 +846,6 @@
 
 					<table style="text-align:left; width: 100%">
 						<tr><td class="checkColumn"><input type="checkbox" name="cumulativeCheck" checked="checked" id="cumulativeCheck"/></td><td><label for="cumulativeCheck">Cumulative</label></td></tr>
-						<tr><td class="checkColumn"><input type="checkbox" name="normalCheck" id="normalCheck" /></td><td><label for="normalCheck">Normalize by volume</label></td></tr>
 					</table>
 						<table style="width:60%;" class="radioTable">
 							<tr><th>Points</th><th>Blobs</th></tr>
@@ -855,8 +860,9 @@
 								<td><input type="radio" name="lineRadio" value="volume" checked="checked" id="volumeRadio"/></td>
 							</tr>
 						</table>
-						<table style="text-align:left; width: 100%; display:none" id="relevantTable">
-							<tr><td class="checkColumn"><input type="checkbox" name="relevantCheck" id="relevantCheck"/></td><td style="text-align:left"><label for="relevantCheck">Relevant phrases</label></td></tr>
+						<table style="text-align:left; width: 100%;">
+							<tr id="normalRow" style="display:none"><td class="checkColumn"><input type="checkbox" name="normalCheck" id="normalCheck" /></td><td><label for="normalCheck">Normalize by document volume</label></td></tr>
+							<tr id="relevantRow" style="display:none"><td class="checkColumn"><input type="checkbox" name="relevantCheck" id="relevantCheck"/></td><td style="text-align:left"><label for="relevantCheck">Relevant phrases</label></td></tr>
 						</table>
 				</form>
 			</div>
