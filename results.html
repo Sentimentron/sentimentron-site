@@ -641,6 +641,32 @@
 		var overviewSection = data.overview;
 		UIshowRelevantPanel = infoSection.using_keywords;
 
+		// Update the stats
+		$('#queryTextStat').text(infoSection.query_text);
+		$('#executionTimeStat').text(infoSection.query_time+'s');
+		$('#keywordsResolvedStat').text(infoSection.keyword_set.length);
+		$('#documentsStat').text(infoSection.documents_returned);
+		$('#sentencesStat').text(infoSection.sentences_returned);
+		$('#phrasesStat').text(infoSection.phrases_returned);
+		$('#domainsRetrievedStat').text(infoSection.domains_returned);
+
+		var oddKeyword = false;
+		var keywordTemplates = [];
+		$.each(infoSection.keyword_set, function(k){
+			oddKeyword = !oddKeyword;
+			var keyTemplate = $('<span />');
+			keyTemplate.text(infoSection.keyword_set[k]);
+			keywordTemplates.push(keyTemplate);
+		})
+		for(i = 0; i < keywordTemplates.length; i++) {
+			$('#keywordsReturned').append(keywordTemplates[i]);
+			if(i != keywordTemplates.length-1)
+				$('#keywordsReturned').append(', ');
+		}
+		if(keywordTemplates.length > 1) {
+			$('#keywordExpansionsSpan').show();
+		}
+
 		UI_addPlotSection("Overview", overviewSection);
 
 		console.log("RPC_consumeInput");
@@ -714,9 +740,7 @@
 	</script>
 
 	<style type="text/css">
-	html.busy, html.busy * {  
-	  cursor: wait !important;  
-	}  
+	
 	.panel {
 		background: rgba(54, 54, 54, 0.9);
 		width:200px;
@@ -869,18 +893,20 @@
 				</form>
 			</div>
 				<div id="queryPanel" class="panel">
-				<p><span class="stat">2000</span> articles retrieved</p>
-				<p><span class="stat">2</span> subdomains retrieved</p>
-				<p><span class="stat">47</span> keywords resolved</p>
+				<p id="queryTextStat" />
 				<hr />
-				<p><span class="stat">4.7s</span> execution time</p>
+				<p><span class="stat" id="domainsRetrievedStat">?</span> domains retrieved</p>
+				<p><span class="stat" id="keywordsResolvedStat">?</span> keywords resolved</p>
 				<hr />
-				<p><span class="stat">1450</span> documents analysed</p>
-				<p><span class="stat">15 321</span> sentences analysed</p>
-				<p><span class="stat">47 231</span> phrases analysed</p>
+				<p><span class="stat" id="documentsStat">?</span> documents analysed</p>
+				<p><span class="stat" id="sentencesStat">?</span> sentences analysed</p>
+				<p><span class="stat" id="phrasesStat">?</span> phrases analysed</p>
 				<hr />
+				<p><span class="stat" id="executionTimeStat">?</span> execution time</p>
+				<hr />
+				<span id="keywordExpansionsSpan" style="display:none;">
 				<h1>Keyword expansions</h1>
-				<p>President Barack Obama, Barack, Obama, Barack Obama, President</p>
+				<p id="keywordsReturned" /></span>
 			</div>
 		</td><td valign="top" id="resultsSection">
 

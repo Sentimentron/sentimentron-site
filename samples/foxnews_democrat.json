@@ -1,12 +1,33 @@
 {
     "info": {
+        "query_time": 15.9, 
+        "keywords_returned": 1, 
         "result_version": "1", 
-        "domains_returned": 2, 
-        "query_text": "foxnews.com democrat", 
         "using_keywords": 1, 
-        "keywords_returned": 1
+        "phrases_returned": 1212, 
+        "documents_returned": 16, 
+        "domains_returned": 3, 
+        "query_text": "foxnews.com democrat", 
+        "sentences_returned": 18, 
+        "keyword_set": [
+            "Democrat"
+        ]
     }, 
     "overview": {
+        "1033430400000": [
+            {
+                "average_phrase_prob": 0.13, 
+                "neg_phrases": 28, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 0, 
+                "id": 78650
+            }
+        ], 
         "1182124800000": [
             {
                 "average_phrase_prob": 0.39, 
@@ -21,32 +42,18 @@
                 "id": 957636
             }
         ], 
-        "1124236800000": [
-            {
-                "average_phrase_prob": 0.19, 
-                "neg_phrases": 57, 
-                "label": -1, 
-                "neg_phrases_rel": 3, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 6, 
-                "id": 86938
-            }
-        ], 
-        "1138579200000": [
+        "1183075200000": [
             {
                 "average_phrase_prob": 0.0, 
-                "neg_phrases": 65, 
-                "label": -1, 
+                "neg_phrases": 52, 
+                "label": 1, 
                 "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 12, 
-                "id": 308201
+                "pos_phrases": 3, 
+                "id": 482069
             }
         ], 
         "1196467200000": [
@@ -77,18 +84,32 @@
                 "id": 281833
             }
         ], 
-        "1215388467000": [
+        "1124236800000": [
+            {
+                "average_phrase_prob": 0.19, 
+                "neg_phrases": 57, 
+                "label": -1, 
+                "neg_phrases_rel": 3, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 6, 
+                "id": 86938
+            }
+        ], 
+        "1162598400000": [
             {
                 "average_phrase_prob": 0.0, 
-                "neg_phrases": 59, 
+                "neg_phrases": 54, 
                 "label": 1, 
                 "neg_phrases_rel": 0, 
-                "neg_sentences": 1, 
+                "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 7, 
-                "id": 18520
+                "pos_phrases": 3, 
+                "id": 51366
             }
         ], 
         "1223957910000": [
@@ -105,18 +126,18 @@
                 "id": 140573
             }
         ], 
-        "1138924800000": [
+        "1215388467000": [
             {
                 "average_phrase_prob": 0.0, 
-                "neg_phrases": 94, 
+                "neg_phrases": 59, 
                 "label": 1, 
                 "neg_phrases_rel": 0, 
-                "neg_sentences": 4, 
+                "neg_sentences": 1, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 4, 
-                "pos_phrases": 27, 
-                "id": 220620
+                "date_method": "Crawled", 
+                "pos_sentences": 0, 
+                "pos_phrases": 7, 
+                "id": 18520
             }
         ], 
         "1161043200000": [
@@ -133,18 +154,46 @@
                 "id": 328737
             }
         ], 
-        "1162598400000": [
+        "1093824000000": [
             {
                 "average_phrase_prob": 0.0, 
-                "neg_phrases": 54, 
+                "neg_phrases": 43, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 2, 
+                "pos_phrases": 2, 
+                "id": 1151000
+            }
+        ], 
+        "1138924800000": [
+            {
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 94, 
                 "label": 1, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 4, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 4, 
+                "pos_phrases": 27, 
+                "id": 220620
+            }
+        ], 
+        "1138579200000": [
+            {
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 65, 
+                "label": -1, 
                 "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 3, 
-                "id": 51366
+                "pos_phrases": 12, 
+                "id": 308201
             }
         ], 
         "1223717652000": [
@@ -175,20 +224,6 @@
                 "id": 256237
             }
         ], 
-        "1183075200000": [
-            {
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 52, 
-                "label": 1, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 3, 
-                "id": 482069
-            }
-        ], 
         "1207008000000": [
             {
                 "average_phrase_prob": 0.0, 
@@ -201,20 +236,6 @@
                 "pos_sentences": 0, 
                 "pos_phrases": 9, 
                 "id": 50419
-            }
-        ], 
-        "1033430400000": [
-            {
-                "average_phrase_prob": 0.13, 
-                "neg_phrases": 28, 
-                "label": 1, 
-                "neg_phrases_rel": 2, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 0, 
-                "id": 78650
             }
         ]
     }, 
@@ -275,6 +296,20 @@
                         "pos_sentences": 0, 
                         "pos_phrases": 9, 
                         "id": 921150
+                    }
+                ], 
+                "1093824000000": [
+                    {
+                        "average_phrase_prob": 0.0, 
+                        "neg_phrases": 43, 
+                        "label": -1, 
+                        "neg_phrases_rel": 0, 
+                        "neg_sentences": 0, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 2, 
+                        "pos_phrases": 2, 
+                        "id": 1151000
                     }
                 ], 
                 "1124236800000": [
@@ -438,18 +473,16 @@
                 "white house", 
                 "print share", 
                 "john mccain", 
-                "condoleezza rice", 
                 "al qaeda", 
                 "begin video", 
                 "the associated", 
-                "new orleans", 
+                "york city", 
                 "supreme court", 
                 "fox news network", 
                 "programming copyright", 
+                "advertise here advertisements", 
                 "for fox fast", 
-                "reverend wright", 
                 "president bush", 
-                "friendly version", 
                 "capitol hill", 
                 "state department", 
                 "majority leader", 
@@ -458,19 +491,19 @@
                 "news channel", 
                 "north korea", 
                 "john kerry", 
-                "york city", 
-                "all rights reserved", 
-                "advertise here", 
+                "new orleans", 
+                "rights reserved", 
                 "las vegas", 
-                "hurricane katrina", 
-                "prime minister", 
+                "foreign minister", 
                 "associated press", 
                 "vice president", 
-                "washington post", 
-                "social security", 
+                "friendly version washington post", 
+                "world trade", 
+                "homeland security", 
+                "san francisco", 
                 "barack obama", 
                 "sen. john", 
-                "news countrywatch", 
+                "all rights", 
                 "new york times", 
                 "los angeles", 
                 "wall street", 
@@ -489,13 +522,14 @@
                 "gothamist.com": 1, 
                 "www.intopsys.com": 1, 
                 "www.prospect.org": 1, 
-                "www.theagitator.com": 1, 
+                "www.theagitator.com": 2, 
                 "haussamen.blogspot.com": 1, 
                 "www.nhc.noaa.gov": 1, 
-                "www.reason.com": 1, 
+                "www.reason.com": 3, 
                 "www.assoc-amazon.com": 1, 
                 "www.memritv.org": 1, 
                 "www.google.co": 1, 
+                "en.wikipedia.org": 2, 
                 "www.fs.fed.us": 1, 
                 "w3.rz-berlin.mpg.de": 1, 
                 "www.media.wmg-is.com": 1, 
@@ -512,6 +546,7 @@
                 "www.bfro.net": 1, 
                 "www.weeklystandard.com": 1, 
                 "www.gotitans.co": 1, 
+                "drmanny.blogs.foxnews.com": 1, 
                 "www-hoover.stanford.edu": 1, 
                 "www.red3d.com": 1, 
                 "www.nea.org": 1, 

@@ -1,38 +1,31 @@
 {
     "info": {
+        "query_time": 16.4, 
+        "keywords_returned": 1, 
         "result_version": "1", 
-        "domains_returned": 2, 
-        "query_text": "foxnews.com Republican", 
         "using_keywords": 1, 
-        "keywords_returned": 1
+        "phrases_returned": 5370, 
+        "documents_returned": 38, 
+        "domains_returned": 3, 
+        "query_text": "foxnews.com Republican", 
+        "sentences_returned": 184, 
+        "keyword_set": [
+            "Republican"
+        ]
     }, 
     "overview": {
-        "1100822400000": [
+        "1193788800000": [
             {
-                "average_phrase_prob": 0.18, 
-                "neg_phrases": 43, 
+                "average_phrase_prob": 0.48, 
+                "neg_phrases": 270, 
                 "label": 1, 
-                "neg_phrases_rel": 1, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
+                "neg_phrases_rel": 6, 
+                "neg_sentences": 13, 
+                "pos_phrases_rel": 4, 
                 "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 8, 
-                "id": 971010
-            }
-        ], 
-        "1129593600000": [
-            {
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 21, 
-                "label": -1, 
-                "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 3, 
-                "id": 283262
+                "pos_sentences": 8, 
+                "pos_phrases": 59, 
+                "id": 11444
             }
         ], 
         "1121817600000": [
@@ -49,18 +42,18 @@
                 "id": 157434
             }
         ], 
-        "1109808000000": [
+        "1173312000000": [
             {
-                "average_phrase_prob": 0.12, 
-                "neg_phrases": 85, 
-                "label": 1, 
-                "neg_phrases_rel": 2, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 25, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 7, 
-                "id": 108742
+                "pos_phrases": 1, 
+                "id": 206655
             }
         ], 
         "1107302400000": [
@@ -75,6 +68,62 @@
                 "pos_sentences": 1, 
                 "pos_phrases": 12, 
                 "id": 57018
+            }
+        ], 
+        "1109808000000": [
+            {
+                "average_phrase_prob": 0.12, 
+                "neg_phrases": 85, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 7, 
+                "id": 108742
+            }
+        ], 
+        "1188432000000": [
+            {
+                "average_phrase_prob": 0.29, 
+                "neg_phrases": 114, 
+                "label": -1, 
+                "neg_phrases_rel": 4, 
+                "neg_sentences": 6, 
+                "pos_phrases_rel": 1, 
+                "date_method": "Certain", 
+                "pos_sentences": 4, 
+                "pos_phrases": 17, 
+                "id": 1132488
+            }
+        ], 
+        "1162598400000": [
+            {
+                "average_phrase_prob": 0.05, 
+                "neg_phrases": 54, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 3, 
+                "id": 51366
+            }
+        ], 
+        "1220609911000": [
+            {
+                "average_phrase_prob": 0.23, 
+                "neg_phrases": 97, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
+                "neg_sentences": 1, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Crawled", 
+                "pos_sentences": 0, 
+                "pos_phrases": 12, 
+                "id": 54634
             }
         ], 
         "1093737600000": [
@@ -161,46 +210,60 @@
                 "id": 996375
             }
         ], 
-        "1058832000000": [
+        "1119312000000": [
             {
-                "average_phrase_prob": 0.26, 
-                "neg_phrases": 79, 
+                "average_phrase_prob": 0.33, 
+                "neg_phrases": 101, 
                 "label": 1, 
-                "neg_phrases_rel": 3, 
+                "neg_phrases_rel": 2, 
                 "neg_sentences": 1, 
-                "pos_phrases_rel": 1, 
+                "pos_phrases_rel": 4, 
                 "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 13, 
-                "id": 181875
+                "pos_sentences": 1, 
+                "pos_phrases": 14, 
+                "id": 1151157
             }
         ], 
-        "1046390400000": [
+        "998611200000": [
             {
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 86, 
-                "label": -1, 
-                "neg_phrases_rel": 0, 
+                "average_phrase_prob": 0.16, 
+                "neg_phrases": 52, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
                 "neg_sentences": 1, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 6, 
-                "id": 239164
+                "pos_phrases": 15, 
+                "id": 206654
             }
         ], 
-        "1173312000000": [
+        "1163548800000": [
             {
                 "average_phrase_prob": 0.0, 
-                "neg_phrases": 25, 
+                "neg_phrases": 95, 
                 "label": -1, 
                 "neg_phrases_rel": 0, 
-                "neg_sentences": 0, 
+                "neg_sentences": 3, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
+                "pos_sentences": 2, 
+                "pos_phrases": 8, 
+                "id": 1155810
+            }
+        ], 
+        "1217010317000": [
+            {
+                "average_phrase_prob": 0.09, 
+                "neg_phrases": 130, 
+                "label": 1, 
+                "neg_phrases_rel": 1, 
+                "neg_sentences": 2, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Crawled", 
                 "pos_sentences": 0, 
-                "pos_phrases": 1, 
-                "id": 206655
+                "pos_phrases": 20, 
+                "id": 31154
             }
         ], 
         "1141257600000": [
@@ -245,32 +308,32 @@
                 "id": 437746
             }
         ], 
-        "998611200000": [
+        "1038441600000": [
             {
-                "average_phrase_prob": 0.16, 
-                "neg_phrases": 52, 
-                "label": 1, 
-                "neg_phrases_rel": 2, 
-                "neg_sentences": 1, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Certain", 
-                "pos_sentences": 0, 
-                "pos_phrases": 15, 
-                "id": 206654
-            }
-        ], 
-        "1217010317000": [
-            {
-                "average_phrase_prob": 0.09, 
-                "neg_phrases": 130, 
+                "average_phrase_prob": 0.19, 
+                "neg_phrases": 86, 
                 "label": 1, 
                 "neg_phrases_rel": 1, 
-                "neg_sentences": 2, 
-                "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 1, 
+                "date_method": "Certain", 
+                "pos_sentences": 1, 
+                "pos_phrases": 16, 
+                "id": 1159093
+            }
+        ], 
+        "1058832000000": [
+            {
+                "average_phrase_prob": 0.26, 
+                "neg_phrases": 79, 
+                "label": 1, 
+                "neg_phrases_rel": 3, 
+                "neg_sentences": 1, 
+                "pos_phrases_rel": 1, 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 20, 
-                "id": 31154
+                "pos_phrases": 13, 
+                "id": 181875
             }
         ], 
         "1186617600000": [
@@ -287,32 +350,32 @@
                 "id": 203699
             }
         ], 
-        "1162598400000": [
+        "1137456000000": [
             {
-                "average_phrase_prob": 0.05, 
-                "neg_phrases": 54, 
-                "label": 1, 
-                "neg_phrases_rel": 2, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 87, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 3, 
-                "id": 51366
+                "pos_phrases": 11, 
+                "id": 272243
             }
         ], 
-        "1220609911000": [
+        "1046390400000": [
             {
-                "average_phrase_prob": 0.23, 
-                "neg_phrases": 97, 
-                "label": 1, 
-                "neg_phrases_rel": 2, 
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 86, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
                 "neg_sentences": 1, 
                 "pos_phrases_rel": 0, 
-                "date_method": "Crawled", 
+                "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 12, 
-                "id": 54634
+                "pos_phrases": 6, 
+                "id": 239164
             }
         ], 
         "1163116800000": [
@@ -343,20 +406,6 @@
                 "id": 187918
             }
         ], 
-        "1193788800000": [
-            {
-                "average_phrase_prob": 0.48, 
-                "neg_phrases": 270, 
-                "label": 1, 
-                "neg_phrases_rel": 6, 
-                "neg_sentences": 13, 
-                "pos_phrases_rel": 4, 
-                "date_method": "Certain", 
-                "pos_sentences": 8, 
-                "pos_phrases": 59, 
-                "id": 11444
-            }
-        ], 
         "1220870524000": [
             {
                 "average_phrase_prob": 0.17, 
@@ -385,18 +434,32 @@
                 "id": 117132
             }
         ], 
-        "1137456000000": [
+        "1100822400000": [
             {
-                "average_phrase_prob": 0.0, 
-                "neg_phrases": 87, 
-                "label": -1, 
-                "neg_phrases_rel": 0, 
+                "average_phrase_prob": 0.18, 
+                "neg_phrases": 43, 
+                "label": 1, 
+                "neg_phrases_rel": 1, 
                 "neg_sentences": 0, 
                 "pos_phrases_rel": 0, 
                 "date_method": "Certain", 
                 "pos_sentences": 0, 
-                "pos_phrases": 11, 
-                "id": 272243
+                "pos_phrases": 8, 
+                "id": 971010
+            }
+        ], 
+        "1210967457000": [
+            {
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 190, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 7, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Crawled", 
+                "pos_sentences": 2, 
+                "pos_phrases": 42, 
+                "id": 1132554
             }
         ], 
         "1169078400000": [
@@ -411,6 +474,20 @@
                 "pos_sentences": 0, 
                 "pos_phrases": 24, 
                 "id": 55770
+            }
+        ], 
+        "1210551286000": [
+            {
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 238, 
+                "label": 1, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 21, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Crawled", 
+                "pos_sentences": 12, 
+                "pos_phrases": 88, 
+                "id": 1151877
             }
         ], 
         "1137024000000": [
@@ -440,6 +517,34 @@
                 "pos_phrases": 71, 
                 "id": 276932
             }
+        ], 
+        "1106265600000": [
+            {
+                "average_phrase_prob": 0.04, 
+                "neg_phrases": 95, 
+                "label": 1, 
+                "neg_phrases_rel": 2, 
+                "neg_sentences": 1, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 1, 
+                "pos_phrases": 24, 
+                "id": 1150784
+            }
+        ], 
+        "1129593600000": [
+            {
+                "average_phrase_prob": 0.0, 
+                "neg_phrases": 21, 
+                "label": -1, 
+                "neg_phrases_rel": 0, 
+                "neg_sentences": 0, 
+                "pos_phrases_rel": 0, 
+                "date_method": "Certain", 
+                "pos_sentences": 0, 
+                "pos_phrases": 3, 
+                "id": 283262
+            }
         ]
     }, 
     "details": {
@@ -459,32 +564,32 @@
                         "id": 971010
                     }
                 ], 
-                "1120694400000": [
+                "1035244800000": [
                     {
-                        "average_phrase_prob": 0.0, 
-                        "neg_phrases": 12, 
+                        "average_phrase_prob": 0.12, 
+                        "neg_phrases": 91, 
                         "label": -1, 
-                        "neg_phrases_rel": 0, 
+                        "neg_phrases_rel": 2, 
                         "neg_sentences": 0, 
                         "pos_phrases_rel": 0, 
                         "date_method": "Certain", 
                         "pos_sentences": 0, 
-                        "pos_phrases": 6, 
-                        "id": 58118
+                        "pos_phrases": 9, 
+                        "id": 117132
                     }
                 ], 
-                "1107302400000": [
+                "1162598400000": [
                     {
-                        "average_phrase_prob": 0.13, 
-                        "neg_phrases": 39, 
+                        "average_phrase_prob": 0.05, 
+                        "neg_phrases": 54, 
                         "label": 1, 
-                        "neg_phrases_rel": 3, 
+                        "neg_phrases_rel": 2, 
                         "neg_sentences": 0, 
                         "pos_phrases_rel": 0, 
                         "date_method": "Certain", 
-                        "pos_sentences": 1, 
-                        "pos_phrases": 12, 
-                        "id": 57018
+                        "pos_sentences": 0, 
+                        "pos_phrases": 3, 
+                        "id": 51366
                     }
                 ], 
                 "1109808000000": [
@@ -501,18 +606,32 @@
                         "id": 108742
                     }
                 ], 
-                "1162598400000": [
+                "1188432000000": [
                     {
-                        "average_phrase_prob": 0.05, 
-                        "neg_phrases": 54, 
+                        "average_phrase_prob": 0.29, 
+                        "neg_phrases": 114, 
+                        "label": -1, 
+                        "neg_phrases_rel": 4, 
+                        "neg_sentences": 6, 
+                        "pos_phrases_rel": 1, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 4, 
+                        "pos_phrases": 17, 
+                        "id": 1132488
+                    }
+                ], 
+                "1107302400000": [
+                    {
+                        "average_phrase_prob": 0.13, 
+                        "neg_phrases": 39, 
                         "label": 1, 
-                        "neg_phrases_rel": 2, 
+                        "neg_phrases_rel": 3, 
                         "neg_sentences": 0, 
                         "pos_phrases_rel": 0, 
                         "date_method": "Certain", 
-                        "pos_sentences": 0, 
-                        "pos_phrases": 3, 
-                        "id": 51366
+                        "pos_sentences": 1, 
+                        "pos_phrases": 12, 
+                        "id": 57018
                     }
                 ], 
                 "1220609911000": [
@@ -543,6 +662,20 @@
                         "id": 826294
                     }
                 ], 
+                "1038441600000": [
+                    {
+                        "average_phrase_prob": 0.19, 
+                        "neg_phrases": 86, 
+                        "label": 1, 
+                        "neg_phrases_rel": 1, 
+                        "neg_sentences": 0, 
+                        "pos_phrases_rel": 1, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 1, 
+                        "pos_phrases": 16, 
+                        "id": 1159093
+                    }
+                ], 
                 "1110931200000": [
                     {
                         "average_phrase_prob": 0.42, 
@@ -569,6 +702,20 @@
                         "pos_sentences": 1, 
                         "pos_phrases": 8, 
                         "id": 682789
+                    }
+                ], 
+                "1120694400000": [
+                    {
+                        "average_phrase_prob": 0.0, 
+                        "neg_phrases": 12, 
+                        "label": -1, 
+                        "neg_phrases_rel": 0, 
+                        "neg_sentences": 0, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 0, 
+                        "pos_phrases": 6, 
+                        "id": 58118
                     }
                 ], 
                 "1182124800000": [
@@ -625,6 +772,34 @@
                         "pos_sentences": 0, 
                         "pos_phrases": 13, 
                         "id": 157434
+                    }
+                ], 
+                "1119312000000": [
+                    {
+                        "average_phrase_prob": 0.33, 
+                        "neg_phrases": 101, 
+                        "label": 1, 
+                        "neg_phrases_rel": 2, 
+                        "neg_sentences": 1, 
+                        "pos_phrases_rel": 4, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 1, 
+                        "pos_phrases": 14, 
+                        "id": 1151157
+                    }
+                ], 
+                "1163548800000": [
+                    {
+                        "average_phrase_prob": 0.0, 
+                        "neg_phrases": 95, 
+                        "label": -1, 
+                        "neg_phrases_rel": 0, 
+                        "neg_sentences": 3, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 2, 
+                        "pos_phrases": 8, 
+                        "id": 1155810
                     }
                 ], 
                 "1173312000000": [
@@ -795,20 +970,6 @@
                         "id": 45035
                     }
                 ], 
-                "1035244800000": [
-                    {
-                        "average_phrase_prob": 0.12, 
-                        "neg_phrases": 91, 
-                        "label": -1, 
-                        "neg_phrases_rel": 2, 
-                        "neg_sentences": 0, 
-                        "pos_phrases_rel": 0, 
-                        "date_method": "Certain", 
-                        "pos_sentences": 0, 
-                        "pos_phrases": 9, 
-                        "id": 117132
-                    }
-                ], 
                 "1130198400000": [
                     {
                         "average_phrase_prob": 0.18, 
@@ -823,6 +984,20 @@
                         "id": 187918
                     }
                 ], 
+                "1210967457000": [
+                    {
+                        "average_phrase_prob": 0.0, 
+                        "neg_phrases": 190, 
+                        "label": -1, 
+                        "neg_phrases_rel": 0, 
+                        "neg_sentences": 7, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Crawled", 
+                        "pos_sentences": 2, 
+                        "pos_phrases": 42, 
+                        "id": 1132554
+                    }
+                ], 
                 "1169078400000": [
                     {
                         "average_phrase_prob": 0.0, 
@@ -835,6 +1010,20 @@
                         "pos_sentences": 0, 
                         "pos_phrases": 24, 
                         "id": 55770
+                    }
+                ], 
+                "1210551286000": [
+                    {
+                        "average_phrase_prob": 0.0, 
+                        "neg_phrases": 238, 
+                        "label": 1, 
+                        "neg_phrases_rel": 0, 
+                        "neg_sentences": 21, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Crawled", 
+                        "pos_sentences": 12, 
+                        "pos_phrases": 88, 
+                        "id": 1151877
                     }
                 ], 
                 "1137024000000": [
@@ -865,6 +1054,20 @@
                         "id": 276932
                     }
                 ], 
+                "1106265600000": [
+                    {
+                        "average_phrase_prob": 0.04, 
+                        "neg_phrases": 95, 
+                        "label": 1, 
+                        "neg_phrases_rel": 2, 
+                        "neg_sentences": 1, 
+                        "pos_phrases_rel": 0, 
+                        "date_method": "Certain", 
+                        "pos_sentences": 1, 
+                        "pos_phrases": 24, 
+                        "id": 1150784
+                    }
+                ], 
                 "1129593600000": [
                     {
                         "average_phrase_prob": 0.0, 
@@ -881,43 +1084,41 @@
                 ]
             }, 
             "terms": [
+                "air force", 
                 "fast links foxnews.com", 
                 "white house", 
                 "print share", 
                 "john mccain", 
                 "al qaeda", 
                 "begin video", 
-                "air force", 
-                "new orleans", 
+                "the associated", 
+                "york city", 
                 "supreme court", 
                 "fox news network", 
                 "programming copyright", 
+                "advertise here advertisements", 
                 "for fox fast", 
-                "reverend wright", 
                 "president bush", 
-                "friendly version", 
                 "capitol hill", 
                 "state department", 
                 "majority leader", 
-                "the associated", 
                 "middle east", 
                 "printer friendly", 
                 "news channel", 
                 "north korea", 
                 "john kerry", 
-                "york city", 
+                "new orleans", 
                 "rights reserved", 
                 "las vegas", 
-                "hurricane katrina", 
                 "foreign minister", 
                 "associated press", 
                 "vice president", 
-                "washington post", 
-                "social security", 
+                "friendly version washington post", 
+                "world trade", 
+                "homeland security", 
                 "san francisco", 
                 "barack obama", 
                 "sen. john", 
-                "world war", 
                 "all rights", 
                 "new york times", 
                 "los angeles", 
@@ -937,13 +1138,14 @@
                 "gothamist.com": 1, 
                 "www.intopsys.com": 1, 
                 "www.prospect.org": 1, 
-                "www.theagitator.com": 1, 
+                "www.theagitator.com": 2, 
                 "haussamen.blogspot.com": 1, 
                 "www.nhc.noaa.gov": 1, 
-                "www.reason.com": 1, 
+                "www.reason.com": 3, 
                 "www.assoc-amazon.com": 1, 
                 "www.memritv.org": 1, 
                 "www.google.co": 1, 
+                "en.wikipedia.org": 2, 
                 "www.fs.fed.us": 1, 
                 "w3.rz-berlin.mpg.de": 1, 
                 "www.media.wmg-is.com": 1, 
@@ -960,6 +1162,7 @@
                 "www.bfro.net": 1, 
                 "www.weeklystandard.com": 1, 
                 "www.gotitans.co": 1, 
+                "drmanny.blogs.foxnews.com": 1, 
                 "www-hoover.stanford.edu": 1, 
                 "www.red3d.com": 1, 
                 "www.nea.org": 1, 
