@@ -35,6 +35,8 @@
 			"samples/submit_validation.json"
 		];
 
+		var apiBase = "http://localhost:5000";
+
 		var waitOnQueryTestFiles = [
 			"samples/wait_normal.json",
 			"samples/wait_fulfilled.json"
@@ -45,11 +47,12 @@
 		}
 
 		function checkAvailability() {
-			return chooseRandomElem(availabilityTestFiles);
+			return apiBase;
 		}
 
 		function submitQuery() {
-			return chooseRandomElem(submitQueryTestFiles);
+			return apiBase+"/submit";
+			//return chooseRandomElem(submitQueryTestFiles);
 		}
 
 		function waitForQuery() {
@@ -131,7 +134,7 @@
 		function RPC_checkAvailability() {
 			ret = true;
 			$.ajax({
-				"url": "http://localhost:5000",
+				"url": checkAvailability(),
 				"dataType": "jsonp",
 				"success": function(response) {
 					var status = response.status;
@@ -262,7 +265,8 @@
 				// Submit to RPC
 				$.ajax({
 					"url": submitQuery(),
-					"dataType": "json",
+					"data": {"q": query},
+					"dataType": "jsonp",
 					"success": function(response) {
 						var status = response.status;
 						if(status == "ok") {
@@ -271,6 +275,9 @@
 						}
 						else if (status == "validation") {
 							UI_showMinorError(response.message);
+						}
+						else {
+							UI_showCriticalError("Query server responded unexpectedly.")
 						}
 					},
 					"error": function() {
