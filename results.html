@@ -203,7 +203,7 @@
 
 	function UI_showAdditionalDataPanel(identifier, information) {
 		var addPanel = $("#additionalPanel");
-		var panelTemplate = $('<p><a class="originalUrl"/><br /><a class="archivedUrl">Archived link &gt;</a></p>');
+		var panelTemplate = $('<p><a class="originalUrl" target="_blank"/><br /><a class="archivedUrl" target="_blank">Archived link &gt;</a></p>');
 
 		// If it's got a headline, make sure we show it
 		var headline = information['headline'];
@@ -215,16 +215,22 @@
 
 		// Display the original URL and archived url
 		var origLink = panelTemplate.children('.originalUrl');
-		origLink.attr("href","http://"+information.url);
+		origLink.attr("href",information.url);
 
 		var archiveLink = panelTemplate.children('.archivedUrl');
-		archiveLink.attr("href","http://"+information.archive_link);
+		archiveLink.attr("href",information.archive_link);
 
 		// Generate a snippet of the URL to display 
 		var origUrl = information.url;
 		if (origUrl.length > 32) {
-			var urlArray = origUrl.split("/");
-			var newUrl   = urlArray[0] + "/.../" + urlArray[urlArray.length-1];
+			var urlArray = origUrl.substr(7).split("/");
+			var newUrl = urlArray[0]
+			var urlCounter = 2;
+			while(newUrl.length < 32 - urlArray[urlArray.length-1].length && urlCounter < urlArray.length-2) {
+				urlCounter++;
+				newUrl += "/" + urlArray[urlCounter]
+			}
+			newUrl += "/.../" + urlArray[urlArray.length-1];
 			origLink.text(newUrl);
 		}
 		else {
@@ -243,8 +249,13 @@
 		addPanel.append(panelDiv);
 	}
 
+	var prevPlotX = null;
+
 	function UI_showAdditionalData(plotX, plotIdentifiersData) {
 		var relevantData; 
+
+		if(plotX == prevPlotX) return;
+		prevPlotX = plotX;
 		
 		// Make sure we're at a valid offset
 		plotX = Math.round(plotX);
@@ -264,13 +275,18 @@
 
 		// Locate the additional information panel 
 		var addPanel = $("#additionalPanel");
+		addPanel.show();
 		addPanel.html("<p>Loading...</p>");
 		var cleared = false;
 
+		console.log(identifiers);
+		var url = "http://localhost:5000/document/";
+
 		$.each(identifiers, function(i){
 			$.ajax({
-			"dataType": "json",
-			"url": getExtraURL(),
+			"dataType": "jsonp",
+			"url": url + identifiers[i],
+			crossDomain: true,
 			"success": function(response) {
 				if(!cleared) {
 					addPanel.html("");
@@ -278,8 +294,10 @@
 				}
 				UI_showAdditionalDataPanel(i, response);
 			},
-			"error": function() {
+			"error": function(jqXHR, textStatus, errorThrown) {
 				addPanel.html("<p>There was a problem loading additional information.</p>")
+				alert(errorThrown);
+				alert(textStatus);
 			}
 		})
 		})
@@ -384,6 +402,8 @@
 			if (item && !dragging) {
 				positionX = item.datapoint[0]
 		    	UI_showAdditionalData(positionX, originalData);
+		    	dragging = true;
+		    	setTimeout(function(){dragging = false}, 1000);
 		    }
 		});
 
@@ -473,6 +493,8 @@
 		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
 			if (item && !dragging) {
 				positionX = item.datapoint[0]
+				dragging = true;
+				setTimeout(function() {dragging = false;}, 100);
 		    	UI_showAdditionalData(positionX, originalData);
 		    }
 		});
@@ -743,7 +765,7 @@
 	
 	.panel {
 		background: rgba(54, 54, 54, 0.9);
-		width:200px;
+		width:230px;
 		padding:15px;
 		margin-left:5px;
 		margin-top:10px;
@@ -835,6 +857,29 @@
 		height: 200px;
 	}
 
+	#additionalPanel div {
+		padding-top: 10px;
+		padding-bottom: 5px;
+		border-bottom: 1px solid gray;
+		word-wrap:break-word
+	}
+
+	#additionalPanel p {
+		line-height: 200%;
+	}
+
+	#additionalPanel div:last-child {
+		border-bottom: none;
+	}
+
+	h2 .headline {
+		font-variant: small-caps;
+		font-weight: 100;
+		font-size: 15px;
+		border-bottom: 1px solid rgb(61, 61, 61);
+		margin-bottom: 5px;
+	}
+
 	</style>
 </head>
 
@@ -914,20 +959,7 @@
 			</div>
 		</td><td valign="top" style="width: 230px" id="additionalSection">
 
-		<div id="additionalPanel" class="panel" style="float:right">
-
-			<div>
-			<h2>Obama campaign "Doomed to fail" say experts</h2>
-			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../dt;s32.html</a>
-				<a href="http://archive.org">Archived Link &gt;</a></p>
-				<hr />
-			</div>
-			<div>
-			<h2>Troubled Obama campaign riven by scandal</h2>
-			<p> <a href="http:///asdfasdfasdsda.com">http://something.com/.../0t;ss2.html</a>
-				<a href="http://archive.org">Archived Link &gt;</a></p>
-			</div>
-		</div>
+		<div id="additionalPanel" class="panel" style="float:right; display:none" />
 
 	</td></tr></table>
 
