@@ -131,8 +131,8 @@
 		function RPC_checkAvailability() {
 			ret = true;
 			$.ajax({
-				"url": checkAvailability(),
-				"dataType": "json",
+				"url": "http://localhost:5000",
+				"dataType": "jsonp",
 				"success": function(response) {
 					var status = response.status;
 					if(status == "delayed") {
