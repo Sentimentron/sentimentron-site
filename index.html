@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <!-- saved from url=(0030)http://www.sentimentron.co.uk/ -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<html><head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<title>Sentimentron</title>
 
 	<script src="assets/jquery-1.9.1.min.js"></script>
-
 	<link rel="stylesheet" type="text/css" href="./assets/style.css">
 
 	<script>
@@ -55,8 +56,12 @@
 			//return chooseRandomElem(submitQueryTestFiles);
 		}
 
+		function submitEmail() {
+			return apiBase + "/add_email"
+		}
+
 		function waitForQuery() {
-			return chooseRandomElem(waitOnQueryTestFiles);
+			return apiBase+"/status";
 		}
 
 	</script>
@@ -203,6 +208,39 @@
 			$("#email_ui").show();
 		}
 
+		function RPC_updateEmailRecord(identifier) {
+			var emailBox = $('#emailBox');
+			var email    = emailBox.val();
+
+			// Trim things
+			email = email.trim();
+			if(email.length == 0) {
+				return;
+			}
+
+			// Update status text 
+			var statusText = $('#emailSubmitStatusText');
+			statusText.text('Submitting...');
+
+			$.ajax({
+				"url": submitEmail()+"/"+identifier,
+				"dataType": "jsonp",
+				"data": {"email": email},
+				"success": function(response) {
+					var status = response.status;
+					if(status == "error"){
+						statusText.text('ERROR: '+ response.error);
+						return;
+					}
+					statusText.text("We'll be in touch.");
+				},
+				"error": function(response) {
+					UI_showCriticalError("Unusual response from query server.");
+				}
+			})
+
+		}
+
 		function UI_queryMonitor(identifier, status) {
 			var splashElement = $("#greetingText");
 			UI_hideSubText();
@@ -211,13 +249,15 @@
 
 			var intervalFunction = function() {
 				if(!retryCount) {
+					$('#delayedQueryForm').submit(function() {
+						RPC_updateEmailRecord(identifier);
+					});
 					UI_showEmail();
-					return;
 				}
 				retryCount--;
 				$.ajax({
-					"url": waitForQuery(),
-					"dataType": "json",
+					"url": waitForQuery()+"/"+identifier,
+					"dataType": "jsonp",
 					"success": function(response) {
 						var status = response.status;
 						if(status == "fulfilled") {
@@ -410,9 +450,11 @@
 	<div id="email_ui" style="display:none">
 		<center><h1>Sorry for the wait.</h1>
 		<p>It's taking longer than normal to process your query. If you type your email address in the box below, Sentimentron will send you an email when your results are ready. Alternatively, you can continue waiting.</p>
-		<form>
+		<form id="delayedQueryForm" action="javascript:void(0)">
 			<input id="emailBox" />
+			<input type="submit" value="Submit &gt;" />
 		</form>
+		<p id="emailSubmitStatusText" />
 		<p>Sentimentron will treat your email as confidential and won't retain it.</p>
 		</center>
 	</div>
