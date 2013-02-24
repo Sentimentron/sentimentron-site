@@ -215,6 +215,18 @@
 		return identifiers;
 	}
 
+	function _UI_identifyAdditionalData_ungrouped_cumulative(x, information) {
+		var identifiers = [];
+
+		for(var i = 0; i < information.length; i++) {
+			var item = information[i];
+			if(item.date == x) {
+				identifiers.push(item.id);
+			}
+		}
+
+		return identifiers;
+	}
 	function _UI_identifyAdditionalData_ungrouped(x, y, prefix, information) {
 
 		var identifiers = [];
@@ -292,12 +304,25 @@
 			prefix += "_rel";
 		}
 
-		identifiers = _UI_identifyAdditionalData_ungrouped(plotX, plotY, prefix, plotIdentifiersData)
+		if(!showingCumulative) {
+			identifiers = _UI_identifyAdditionalData_ungrouped_cumulative(plotX, plotY, prefix, plotIdentifiersData);
+		}
+		else {
+			if(prevPlotX == plotX) {
+				return;
+			}
+			identifiers = _UI_identifyAdditionalData_ungrouped_cumulative(plotX, plotIdentifiersData);
+		}
+
+		prevPlotX = plotX;
 
 		_UI_showAdditionalInformation_processIdentifiers(identifiers);
 	}
 
 	function _UI_showAdditionalInformation_processIdentifiers(identifiers) {
+		if(identifiers.length == 0) {
+			return;
+		}
 		var url = "http://localhost:5000/document/";
 		var addPanel = $("#additionalPanel");
 		var cleared = false;
