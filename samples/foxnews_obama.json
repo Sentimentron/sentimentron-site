@@ -1,6 +1,6 @@
 {
     "info": {
-        "query_time": 13.06, 
+        "query_time": 13.16, 
         "keywords_returned": 1, 
         "keywords_set": [
             "Obama"
@@ -1018,6 +1018,35 @@
                 ]
             ], 
             "details": {}
+        }
+    }, 
+    "aux": {
+        "www.foxnews.com": {
+            "keywords": [
+                "begin video clip", 
+                "white house", 
+                "harry reid", 
+                "top video", 
+                "hillary rodham clinton", 
+                "west virginia", 
+                "new york times", 
+                "hillary clinton", 
+                "south carolina", 
+                "interview archive", 
+                "louis farrakhan", 
+                "bill clinton", 
+                "stumbleupon fnc", 
+                "jeremiah wright", 
+                "fox news"
+            ], 
+            "external": {
+                "www.theagitator.com": 2, 
+                "www.reason.com": 3, 
+                "www.foxnews.com": 76, 
+                "en.wikipedia.org": 2, 
+                "others": 1
+            }, 
+            "coverage": 2.5316455696202533
         }
     }
 }
