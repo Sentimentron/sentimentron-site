@@ -33,11 +33,7 @@
 		//
 
 		var resultTestFiles = [
-			"samples/foxnews.json",
-			"samples/obama.json",
-			"samples/foxnews_democrat.json",
-			"samples/apple_computer.json",
-			"samples/guardian.json"
+			"samples/foxnews_obama.json"
 		];
 
 		//var resultTestFiles = ['samples/foxnews_democrat.json'];
@@ -201,6 +197,34 @@
 		return convert_singletonDict(ret).sort(sortFunc);
 	}
 
+	function _UI_identifyAdditionalData_grouped(date, information) {
+		var identifiers = [];
+
+		information = RPC_groupByDay(information);
+		information = information[date];
+
+		for(var i = 0; i < information.length; i++) {
+			var item = information[i];
+			identifiers.push(item.id);
+		}
+
+		return identifiers;
+	}
+
+	function _UI_identifyAdditionalData_ungrouped(date, information) {
+
+		var identifiers = [];
+
+		for(var i = 0; i < information.length; i++) {
+			var item = information[i];
+			if(item.date == date) {
+				identifiers.push(item.id);
+			}
+		}
+
+		return identifiers;
+	}
+
 	function UI_showAdditionalDataPanel(identifier, information) {
 		var addPanel = $("#additionalPanel");
 		var panelTemplate = $('<p><a class="originalUrl" target="_blank"/><br /><a class="archivedUrl" target="_blank">Archived link &gt;</a></p>');
@@ -253,7 +277,10 @@
 
 	function UI_showAdditionalData(plotX, plotIdentifiersData) {
 		var relevantData; 
+		var identifiers;
 
+		console.log(plotX);
+		console.log(plotIdentifiersData);
 		if(plotX == prevPlotX) return;
 		prevPlotX = plotX;
 		
@@ -261,17 +288,9 @@
 		plotX = Math.round(plotX);
 
 		// Retrieve data subset
-		relevantData = plotIdentifiersData[plotX];
-		if (relevantData == null) {
-			return;
-		}
-
-		// Retrieve the identifiers
-		identifiers = []
-		$.each(relevantData, function(t) {
-			var record = relevantData[t];
-			identifiers.push(record.id);
-		});
+		if(displayElem == "documents" || displayElem == "volume") {
+			identifiers = _UI_identifyAdditionalData_grouped(plotX, plotIdentifiersData);
+		} 
 
 		// Locate the additional information panel 
 		var addPanel = $("#additionalPanel");
@@ -325,6 +344,7 @@
 		}
 		var positiveAxis = null, negativeAxis = null;
 		if(displayElem == "documents")  {
+			data = RPC_groupByDay(data);
 			positiveAxis = UI_prepareData_docLabel(data, 1);
 			negativeAxis = UI_prepareData_docLabel(data,-1);
 		}
@@ -433,7 +453,7 @@
 			data = originalData;
 		}
 
-		data = UI_prepareData_volume(data);
+		data = UI_prepareData_volume(RPC_groupByDay(data));
 
 		// Plot the data
 
@@ -653,20 +673,89 @@
 
 	}
 
+	function RPC_groupByDay(input) {
+		var ret = {};
+		for(var i = 0; i < input.length; i++) {
+			var record = input[i];
+			var originalDate = record.date; 
+			var groupDate = Math.floor(originalDate/(1000*60*60*24))*1000*60*60*24;
+			if(!(groupDate in ret)) {
+				ret[groupDate] = [];
+			}
+			ret[groupDate].push(record);
+		}
+
+		return ret;
+	}
+
+	function RPC_expandInput(input) {
+		var RPC_expandDateMethod = function(m) {
+			if(m == 0) return "Certain";
+			if(m == 1) return "Uncertain";
+			if(m == 2) return "Crawled";
+			throw new RangeError(m);
+		};
+		var RPC_expandRow = function(r) {
+			return {
+				date_method: 		RPC_expandDateMethod(r[0]),
+				date: 		 		r[1],
+				pos_phrases: 		r[2],
+				neg_phrases: 		r[3],
+				pos_sentences:  	r[4],
+				neg_sentences:  	r[5],
+				pos_sentences_rel: 	r[6],
+				neg_sentences_rel:  r[7],
+				label:              r[8],
+				id: 				r[9]
+			}
+		};
+		var RPC_expandSection = function(s) {
+			var ret = [];
+			for(var i = 0; i < s.length; i++) {
+				ret.push(RPC_expandRow(s[i]));
+			}
+			return ret;
+		};
+		var output = {};
+		$.each(input, function(d) {
+			output[d] = RPC_expandSection(input[d]['docs']);
+		});
+		return output;
+	}
+
+	function RPC_concatenateDocs(domainDocumentInfo) {
+		var ret = [];
+		$.each(domainDocumentInfo, function(d){
+			var domainContents = domainDocumentInfo[d];
+			for(var i = 0; i < domainContents.length; i++) {
+				ret.push(domainContents[i]);
+			}
+		});
+		return ret;
+	}
+
 	var RPC_consumeInput = function(data){
 	   $('html').addClass('busy');
 		var infoSection = data.info;
-		if(!('result_version' in infoSection) || infoSection.result_version != '1') {
+		if(!('result_version' in infoSection) || infoSection.result_version != '2') {
 			alert("Unsupported result format.");
 			return;
 		} 
-		var overviewSection = data.overview;
+
+		// Expand the document information section
+		data['siteData'] = RPC_expandInput(data['siteData']);
+		var documentSection = data['siteData'];
+
+		// Create the overview section by composing all of the 
+		// individual domain sections
+		var overviewSection = RPC_concatenateDocs(documentSection);
+
 		UIshowRelevantPanel = infoSection.using_keywords;
 
 		// Update the stats
 		$('#queryTextStat').text(infoSection.query_text);
 		$('#executionTimeStat').text(infoSection.query_time+'s');
-		$('#keywordsResolvedStat').text(infoSection.keyword_set.length);
+		$('#keywordsResolvedStat').text(infoSection.keywords_set.length);
 		$('#documentsStat').text(infoSection.documents_returned);
 		$('#sentencesStat').text(infoSection.sentences_returned);
 		$('#phrasesStat').text(infoSection.phrases_returned);
@@ -674,10 +763,10 @@
 
 		var oddKeyword = false;
 		var keywordTemplates = [];
-		$.each(infoSection.keyword_set, function(k){
+		$.each(infoSection.keywords_set, function(k){
 			oddKeyword = !oddKeyword;
 			var keyTemplate = $('<span />');
-			keyTemplate.text(infoSection.keyword_set[k]);
+			keyTemplate.text(infoSection.keywords_set[k]);
 			keywordTemplates.push(keyTemplate);
 		})
 		for(i = 0; i < keywordTemplates.length; i++) {
@@ -692,10 +781,10 @@
 		UI_addPlotSection("Overview", overviewSection);
 
 		console.log("RPC_consumeInput");
-		$.each(data.details, function(index, item){
+		$.each(documentSection, function(index, item){
 			console.log([index,item]);
 			UI_addPlotSection(index, item);
-		})
+		});
 
 		UI_plotCharts();
 	   $('html').removeClass('busy');
