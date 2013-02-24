@@ -160,20 +160,24 @@
 
 	function UI_prepareData_docProperty(data, prefix) {
 		var ret = {}
-		$.each(data, function(t) {
-			$.each(data[t], function(d){
-				rec = data[t][d]
-				attr = rec[prefix]
-				if(showingNormal) {
-					console.log(data[t]);
-					attr = attr/data[t].length
-				}
-				if(t in ret) {
-					ret[t] += attr;
-				} else {
-					ret[t] = attr;
-				}
-			});
+		var grouped = null;
+		if(showingNormal) {
+			grouped = RPC_groupByDay(data);
+		}
+		$.each(data, function(d){
+			var rec = data[d];
+			var t = rec.date;
+			attr = rec[prefix]
+			console.log(prefix);
+			if(showingNormal) {
+				var tempDate = RPC_getGroupDate(t);
+				attr = attr/grouped[tempDate].length;
+			}
+			if(t in ret) {
+				ret[t] += attr;
+			} else {
+				ret[t] = attr;
+			}
 		});
 
 		return convert_singletonDict(ret).sort(sortFunc);
@@ -328,14 +332,6 @@
 		var plotSection = $("#"+sectionTitle);
 		var plotArea = plotSection.children(".plotArea");
 
-		var data;
-		if('docs' in originalData) {
-			data = originalData.docs; 
-		}
-		else {
-			data = originalData;
-		}
-
 		// Compute the data
 		// UI_prepareData_docProperty(data, prefix) 
 		var prefix = "pos_" + displayElem;
@@ -344,17 +340,17 @@
 		}
 		var positiveAxis = null, negativeAxis = null;
 		if(displayElem == "documents")  {
-			data = RPC_groupByDay(data);
+			var data = RPC_groupByDay(data);
 			positiveAxis = UI_prepareData_docLabel(data, 1);
 			negativeAxis = UI_prepareData_docLabel(data,-1);
 		}
 		else {
-			positiveAxis = UI_prepareData_docProperty(data, prefix);
+			positiveAxis = UI_prepareData_docProperty(originalData, prefix);
 			var prefix = "neg_" + displayElem;
 			if(displayElem == "phrases" && showOnlyRelevant) {
 				prefix += "_rel";
 			}
-			negativeAxis = UI_prepareData_docProperty(data, prefix);
+			negativeAxis = UI_prepareData_docProperty(originalData, prefix);
 		}
 		negativeAxis = negativeAxis.map(negativeMapFunc);
 
@@ -673,12 +669,16 @@
 
 	}
 
+	function RPC_getGroupDate(originalDate) {
+		return Math.floor(originalDate/(1000*60*60*24))*1000*60*60*24;
+	}
+
 	function RPC_groupByDay(input) {
 		var ret = {};
 		for(var i = 0; i < input.length; i++) {
 			var record = input[i];
 			var originalDate = record.date; 
-			var groupDate = Math.floor(originalDate/(1000*60*60*24))*1000*60*60*24;
+			var groupDate = RPC_getGroupDate(originalDate);
 			if(!(groupDate in ret)) {
 				ret[groupDate] = [];
 			}
@@ -703,10 +703,11 @@
 				neg_phrases: 		r[3],
 				pos_sentences:  	r[4],
 				neg_sentences:  	r[5],
-				pos_sentences_rel: 	r[6],
-				neg_sentences_rel:  r[7],
+				pos_phrases_rel: 	r[6],
+				neg_phrases_rel:    r[7],
 				label:              r[8],
-				id: 				r[9]
+				phrase_prob:		r[9],
+				id:  				r[10]
 			}
 		};
 		var RPC_expandSection = function(s) {
