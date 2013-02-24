@@ -33,7 +33,7 @@
 		//
 
 		var resultTestFiles = [
-			"samples/foxnews_obama.json"
+			"samples/guardian_foxnews_obama.json"
 		];
 
 		//var resultTestFiles = ['samples/foxnews_democrat.json'];
@@ -305,7 +305,7 @@
 		}
 
 		if(!showingCumulative) {
-			identifiers = _UI_identifyAdditionalData_ungrouped_cumulative(plotX, plotY, prefix, plotIdentifiersData);
+			identifiers = _UI_identifyAdditionalData_ungrouped(plotX, plotY, prefix, plotIdentifiersData);
 		}
 		else {
 			if(prevPlotX == plotX) {
