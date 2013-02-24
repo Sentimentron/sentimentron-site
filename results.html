@@ -215,14 +215,17 @@
 		return identifiers;
 	}
 
-	function _UI_identifyAdditionalData_ungrouped(date, information) {
+	function _UI_identifyAdditionalData_ungrouped(x, y, prefix, information) {
 
 		var identifiers = [];
+		y = Math.abs(y);
 
 		for(var i = 0; i < information.length; i++) {
 			var item = information[i];
-			if(item.date == date) {
-				identifiers.push(item.id);
+			if(item.date == x) {
+				var interesting = item[prefix];
+				if(interesting == y) 
+					identifiers.push(item.id);
 			}
 		}
 
@@ -279,7 +282,49 @@
 
 	var prevPlotX = null;
 
-	function UI_showAdditionalData(plotX, plotIdentifiersData) {
+	function UI_showAdditionalData_ungrouped(plotX, plotY, plotIdentifiersData) {
+
+		var prefix; var identifiers;
+		if(plotY >= 0) prefix = "pos_";
+		else prefix = "neg_";
+		prefix += displayElem;
+		if(displayElem == "phrases" && showOnlyRelevant) {
+			prefix += "_rel";
+		}
+
+		identifiers = _UI_identifyAdditionalData_ungrouped(plotX, plotY, prefix, plotIdentifiersData)
+
+		_UI_showAdditionalInformation_processIdentifiers(identifiers);
+	}
+
+	function _UI_showAdditionalInformation_processIdentifiers(identifiers) {
+		var url = "http://localhost:5000/document/";
+		var addPanel = $("#additionalPanel");
+		var cleared = false;
+
+		addPanel.show();
+		addPanel.html("<p>Loading...</p>");
+		$.each(identifiers, function(i){
+			$.ajax({
+			"dataType": "jsonp",
+			"url": url + identifiers[i],
+			crossDomain: true,
+			"success": function(response) {
+				if(!cleared) {
+					addPanel.html("");
+					cleared = true;
+				}
+				UI_showAdditionalDataPanel(i, response);
+			},
+			"error": function(jqXHR, textStatus, errorThrown) {
+				addPanel.html("<p>There was a problem loading additional information.</p>")
+				alert(errorThrown);
+				alert(textStatus);
+			}});
+		});
+	}
+
+	function UI_showAdditionalData_grouped(plotX, plotIdentifiersData) {
 		var relevantData; 
 		var identifiers;
 
@@ -300,30 +345,9 @@
 		var addPanel = $("#additionalPanel");
 		addPanel.show();
 		addPanel.html("<p>Loading...</p>");
-		var cleared = false;
-
 		console.log(identifiers);
-		var url = "http://localhost:5000/document/";
+		_UI_showAdditionalInformation_processIdentifiers(identifiers);
 
-		$.each(identifiers, function(i){
-			$.ajax({
-			"dataType": "jsonp",
-			"url": url + identifiers[i],
-			crossDomain: true,
-			"success": function(response) {
-				if(!cleared) {
-					addPanel.html("");
-					cleared = true;
-				}
-				UI_showAdditionalDataPanel(i, response);
-			},
-			"error": function(jqXHR, textStatus, errorThrown) {
-				addPanel.html("<p>There was a problem loading additional information.</p>")
-				alert(errorThrown);
-				alert(textStatus);
-			}
-		})
-		})
 	}
 
 	function _UI_plotSection_docPrp(sectionTitle, plotAreaTitle, originalData) {
@@ -340,7 +364,7 @@
 		}
 		var positiveAxis = null, negativeAxis = null;
 		if(displayElem == "documents")  {
-			var data = RPC_groupByDay(data);
+			var data = RPC_groupByDay(originalData);
 			positiveAxis = UI_prepareData_docLabel(data, 1);
 			negativeAxis = UI_prepareData_docLabel(data,-1);
 		}
@@ -416,8 +440,14 @@
 		var dragging = false;
 		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
 			if (item && !dragging) {
-				positionX = item.datapoint[0]
-		    	UI_showAdditionalData(positionX, originalData);
+				positionX = item.datapoint[0];
+				positionY = item.datapoint[1];
+				if(displayElem == "documents" || displayElem == "volume") {
+					UI_showAdditionalData_grouped(positionX, originalData);
+				}
+				else {
+					UI_showAdditionalData_ungrouped(positionX, positionY, originalData);
+				}
 		    	dragging = true;
 		    	setTimeout(function(){dragging = false}, 1000);
 		    }
@@ -507,11 +537,14 @@
 		$.plot("#"+plotAreaTitle, data, plotOptions);
 		var dragging = false;
 		$("#"+plotAreaTitle).bind("plotclick", function(event, pos, item) {
+			if(displayElem != "volume") {
+				return;
+			}
 			if (item && !dragging) {
 				positionX = item.datapoint[0]
 				dragging = true;
 				setTimeout(function() {dragging = false;}, 100);
-		    	UI_showAdditionalData(positionX, originalData);
+		    	UI_showAdditionalData_grouped(positionX, originalData);
 		    }
 		});
 
