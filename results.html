@@ -33,7 +33,8 @@
 		//
 
 		var resultTestFiles = [
-			"samples/guardian_foxnews_obama.json"
+			//"samples/guardian_foxnews_obama.json"
+			"samples/foxnews_obama.json"
 		];
 
 		//var resultTestFiles = ['samples/foxnews_democrat.json'];
@@ -586,7 +587,7 @@
 	var plotAreaInformation = []
 
 	function UI_getRandomColour() {
-	    var l = 'ABCDEF0123456789ABCDEF'.split('');
+	    var l = 'ABCDEF0123456789ABCDEFABCDEFABCDEFABCDEF'.split('');
 	    var ret = '#';
 	    for (var i = 0; i < 6; i++ ) {
 	        ret += l[Math.round(Math.random() * (l.length-1))];
@@ -594,9 +595,16 @@
 	    return ret;
 	}
 
+	function _UI_labelFormatter(label, series) {
+		// From www.flotcharts.org/flot/examples/series-pie/index.html
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+	}
+
 	function _UI_plotSection_additional(sectionTitle, originalData) {
 		// Find the div which contains the plot
 		var plotSection = $("#"+sectionTitle);
+
+		console.log(originalData);
 
 		// Display the additional details table 
 		var additionalTable = plotSection.find(".detailsTable");
@@ -605,6 +613,7 @@
 		var coverageInfo = additionalTable.find('.coverageInfo');
 		var siteTerms    = additionalTable.find('.siteTerms');
 		var linkPlot 	 = additionalTable.find('.linkPlot');
+		var linkSeries   = additionalTable.find('.linkSeries');
 
 		// Produce a coverage estimate 
 		if(originalData.coverage < 1.00) {
@@ -617,13 +626,13 @@
 		// Fill in the site term list
 		var oddTerm = false;
 		var termSpans = [];
-		$.each(originalData.terms, function(t) {
+		$.each(originalData.keywords, function(t) {
 			var spanTemplate = $("<span class=\"siteTerm\" />");
 			oddTerm = !oddTerm;
 			if(oddTerm) {
 				spanTemplate.addClass("odd");
 			}
-			spanTemplate.text(originalData.terms[t]);
+			spanTemplate.text(originalData.keywords[t]);
 			termSpans.push(spanTemplate);
 		});
 
@@ -634,22 +643,45 @@
 		}
 
 		// Produce the plot of things the site links to
-		var linkChartData = []
+		var linkChartData = [];
+		var linkChartSeries = [];
 		$.each(originalData['external'], function(t) {
-			var record = {'label': t, 'data': originalData['external'][t], 'color': UI_getRandomColour()};
+			var color = UI_getRandomColour();
+			var record = {'label': t, 'data': originalData['external'][t], 'color': color};
+			linkChartSeries.push([t, color])
 			linkChartData.push(record);
 		});
 
+		// Create a manual series
+		for(var i = 0; i < linkChartSeries.length; i++) {
+			var spanTemplate = $("<span class=\"linkSeriesSpan\"/>");
+			var text = linkChartSeries[i][0];
+			if(i != linkChartSeries.length - 1) text += ", "
+			spanTemplate.text(text);
+			spanTemplate.css('color', linkChartSeries[i][1]);
+			linkSeries.append(spanTemplate);
+		}
+
 		$.plot(linkPlot, linkChartData, {
 			series: {
-				pie: {
-					show: true
-				}
-			},
-			legend: {
-				labelBoxBorderColor: "none"
-			}
-		});
+			        pie: {
+			            show: true,
+			            radius: 1,
+			            label: {
+			                show: false,
+			                formatter: _UI_labelFormatter,
+			                background: {
+			                    opacity: 0.5,
+			                    color: '#000'
+			                }, 
+			                threshold: 0.1
+			            }
+			        }
+			    },
+			    legend: {
+			        show: false
+			    }
+			});
 
 		additionalTable.show();
 			
@@ -677,7 +709,7 @@
 	function UI_addPlotSection(title, data) {
 		plotSectionCounter++;
 		// Create the scaffold
-		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><th>Coverage estimate</th><th>Site links</th></tr><tr><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td><td rowspan=\"2\"><div class=\"linkPlot\" /></td></tr><tr><td class=\"siteTerms\">barack obama, hillary clinton</td></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
+		var plotSectionDiv = $("<div class=\"panel resultsPanel\"><h1 class=\"siteThing\"/><center><table class=\"detailsTable\"><tr><td><h3>Coverage estimate</h3></td><td><p class=\"coverageParagraph\"><span class=\"coverageInfo\">58</span>&#37;</p></td></tr><td><h3>Site links </h3><p class=\"linkSeries\" /p></td><td rowspan=\"2\"><div class=\"linkPlot\" /></td></tr><tr><td class=\"siteTerms\" /></table></center><div class=\"plotAreaPadding\"><div class=\"plotArea\"></div></div>");
 
 		// Update the section title
 		var plotSectionTitle = plotSectionDiv.find('h1');
@@ -700,6 +732,8 @@
 		// Update internal records 
 		//plotAreaInformation[plotSectionCounter-1] = data
 		plotAreaInformation.push(data);
+
+		return "plotSection"+(plotSectionCounter);
 	}
 
 
@@ -841,8 +875,9 @@
 
 		console.log("RPC_consumeInput");
 		$.each(documentSection, function(index, item){
+			var title = UI_addPlotSection(index, item);
 			console.log([index,item]);
-			UI_addPlotSection(index, item);
+			_UI_plotSection_additional(title, data['aux'][index]);
 		});
 
 		UI_plotCharts();
@@ -1002,7 +1037,7 @@
 
 	.linkPlot {
 		width: 200px;
-		height: 200px;
+		height: 100px;
 	}
 
 	#additionalPanel div {
@@ -1026,6 +1061,27 @@
 		font-size: 15px;
 		border-bottom: 1px solid rgb(61, 61, 61);
 		margin-bottom: 5px;
+	}
+
+	.detailsTable {
+		font-size: 15px;
+		margin-bottom: 15px;
+	}
+	.detailsTable td {
+		margin: 0px;
+	}
+
+	.detailsTable h3 {
+		font-weight: normal;
+		font-variant: small-caps;
+		margin: 0px;
+	}
+
+	.detailsTable .odd {
+		font-style: italic;
+	}
+	.linkSeriesSpan {
+		background: rgb(95,95,95);
 	}
 
 	</style>
