@@ -12,8 +12,8 @@ def deploy_static(to_what):
 	bucket = conn.get_bucket(to_what)
 
 	for d in ["assets", "flot"]:
-		for f in os.listdir("assets"):
-			name = "assets/"+f
+		for f in os.listdir(d):
+			name = d+"/"+f
 			key = Key(bucket)
 			key.key = name 
 			key.set_contents_from_filename(name)
