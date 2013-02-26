@@ -1,7 +1,8 @@
 body {
 	
 	background-color: #27567a;
-
+	background-image: url('background.gif');
+	background-repeat: no-repeat;
 	color:white;
 	font-family:'Lucida Sans Unicode','Lucida Grande','Lucida Sans','DejaVu Sans Condensed',sans-serif;
 	font-weight: 200;
@@ -38,8 +39,15 @@ a:hover {
 #header img {
 	float:left;
 }
+#header h1 {
+	float:left;
+	vertical-align: bottom;
+	margin-left: 25px;
+	margin-top: 30px;
+	font-size: 16px;
+}
 #header p {
-	float: left;
+	float: right;
 	vertical-align: bottom;
 	margin-left: 25px;
 	margin-top: 30px;
