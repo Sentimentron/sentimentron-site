@@ -45,11 +45,11 @@
 		]
 
 		function getResultURL(resultId) {
-			return "http://results.sentimentron.co.uk/results/"+resultId
+			return "http://results.sentimentron.co.uk/results/"+resultId;
 		}
 
 		function getExtraURL() {
-			return chooseRandomElem(extraTestFiles);
+			return "http://api.sentimentron.co.uk/document/";
 		}
 
 	</script>
@@ -324,7 +324,7 @@
 		if(identifiers.length == 0) {
 			return;
 		}
-		var url = "http://localhost:5000/document/";
+		var url = "http://api.sentimentron.co.uk/document/";
 		var addPanel = $("#additionalPanel");
 		var cleared = false;
 
