@@ -133,7 +133,7 @@
 
 		function UI_redirectToResult(url) {
 			$(document).css("overflow", "hidden");
-			var queryDiv = $("#query");
+			var queryDiv = $("body");
 			queryDiv.animate({'margin-left':'-250%'}, "fast", function() {
 				window.location = url;
 			});
@@ -378,8 +378,6 @@
 		</div>
 	</noscript>
 
-	<div id="query" style="display:none">
-
 	<div id="header">
 
 		<img id="logo" src="./assets/Sentimentron.png">
@@ -398,6 +396,8 @@
 
 	</div>
 
+	<div id="query" style="display:none">
+
 	<div id="splash">
 
 		<h1><span id="greetingText">Ready.</span></h1>
@@ -409,16 +409,10 @@
 		</div>
 		<p>Enter some sites and/or keywords you want to know about.</p>
 		<p id="subText" style="display:none"> </p>
-		<img src="./assets/splash.png">
-		<p>Thanks for visiting.</p>
 
 	</div>
 
-	<div id="footer">
 
-		<p>Copyright © 2012 Richard Townsend. Sentimentron is a research project, results are automatically generated and may not be accurate. Use of Sentimentron is subject to some <a href="http://www.sentimentron.co.uk/terms.html">Terms of Use</a>.</p>
-
-	</div>
 	</div>
 
 	<div id="critical" style="display:none">
@@ -436,6 +430,12 @@
 		<p id="emailSubmitStatusText" />
 		<p>Sentimentron will treat your email as confidential and won't retain it.</p>
 		</center>
+	</div>
+
+	<div id="footer">
+
+		<p>Copyright &copy; 2012 Richard Townsend. Sentimentron is a research project, results are automatically generated and may not be accurate. Use of Sentimentron is subject to some <a href="http://www.sentimentron.co.uk/terms.html">Terms of Use</a>.</p>
+
 	</div>
 
 </body></html>
