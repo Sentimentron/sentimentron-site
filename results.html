@@ -44,8 +44,8 @@
 			"samples/extra_noheadline.json"
 		]
 
-		function getResultURL() {
-			return chooseRandomElem(resultTestFiles);
+		function getResultURL(resultId) {
+			return "http://results.sentimentron.co.uk/results/"+resultId
 		}
 
 		function getExtraURL() {
@@ -888,6 +888,8 @@
 
 	$(document).ready(function() {
 
+		var location, fetchId;
+
 		$('html').addClass('busy');
 
 		$('form').each(function() { this.reset() });
@@ -919,9 +921,17 @@
 		// Display the main page body 
 		$("#wrapper").show();
 
+		// Get the result to load 
+		location = window.location.href;
+		location = location.split('#')
+		if(location.length == 1) {
+			alert('Could not determine the result identifier!')
+		}
+		fetchId  = location[location.length - 1];
+
 		// Load the result data...
 		$.ajax({
-			"url": getResultURL(),
+			"url": getResultURL(fetchId),
 			"dataType": "json",
 			"success": function(response) {
 				RPC_consumeInput(response);
