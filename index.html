@@ -10,7 +10,26 @@
 	<link rel="stylesheet" type="text/css" href="./assets/style.css">
 
 	<script>
+		function generateRPCURL(from_url) {
+			return "samples/" + from_url;
+		}
 
+		function checkAvailability() {
+			return apiBase;
+		}
+
+		function submitQuery() {
+			return apiBase+"/submit";
+			//return chooseRandomElem(submitQueryTestFiles);
+		}
+
+		function submitEmail() {
+			return apiBase + "/add_email"
+		}
+
+		function waitForQuery() {
+			return apiBase+"/status";
+		}
 		// Utility functions
 		function chooseRandomElem(of) {
 			var length = of.length;
@@ -20,7 +39,7 @@
 
 	</script>
 
-	<script src="paths.js"></script>
+	<script src="paths.production.js"></script>
 
 	<script>
 
@@ -106,7 +125,8 @@
 				"error": function() {
 					UI_showCriticalError("Failed to retrieve service availability.");
 					ret = false;
-				}
+				},
+				timeout: 15000
 			});
 			return ret;
 		}
@@ -192,7 +212,8 @@
 				},
 				"error": function(response) {
 					UI_showCriticalError("Unusual response from query server.");
-				}
+				},
+				timeout: 15000
 			})
 
 		}
@@ -230,7 +251,8 @@
 					"error": function() {
 						UI_showCriticalError("Query server became unavailable.");
 						ret = false;
-					}
+					},
+					timeout: 15000
 			});
 			}
 
@@ -279,7 +301,8 @@
 					"error": function() {
 						UI_showCriticalError("Query server became unavailable.");
 						ret = false;
-					}
+					},
+					timeout: 15000
 				});
 
 			}
