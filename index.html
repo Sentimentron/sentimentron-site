@@ -73,6 +73,7 @@
 		function UI_showCriticalError(text) {
 			var errorPane = $("#critical");
 			var queryPane = $("#query");
+			$("#emailBox").hide();
 
 			queryPane.hide();
 			errorPane.show();
@@ -214,18 +215,18 @@
 					UI_showCriticalError("Unusual response from query server.");
 				},
 				timeout: 15000
-			})
-
+			});
 		}
 
 		function UI_queryMonitor(identifier, status) {
 			var splashElement = $("#greetingText");
 			UI_hideSubText();
 
-			retryCount = 5;
+			retryCount = 5;	
+			var running = true;
 
 			var intervalFunction = function() {
-				if(!retryCount) {
+				if(!retryCount && running) {
 					$('#delayedQueryForm').submit(function() {
 						RPC_updateEmailRecord(identifier);
 					});
@@ -243,6 +244,21 @@
 						}
 						else if(status == "waiting") {
 							splashElement.text(UI_getWaitMessage());
+							if(('message') in response) {
+								var message = response.message;
+								UI_showSubText(message);
+							}
+						}
+						else if(status == "cancelled") {
+							var message = "";
+							if (('message') in response) {
+								UI_showMinorError(response.message);
+							}
+							else {
+								UI_showMinorError("Query cancelled.");
+							}
+							splashElement.text("There's a problem.")
+							running = false;
 						}
 						else {
 							UI_showCriticalError("Unusual response from query server. Your query has been cancelled.");
@@ -257,7 +273,10 @@
 			}
 
 			intervalFunction();
-			var interval = setInterval(intervalFunction, 5000);
+			var interval = setInterval(function() {
+				if(running) {
+					intervalFunction()
+				}}, 5000);
 		}
 
 		function UI_searchFormSubmit() {
