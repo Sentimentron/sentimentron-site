@@ -39,7 +39,7 @@
 
 	</script>
 
-	<script src="paths.production.js"></script>
+	<script src="paths.js"></script>
 
 	<script>
 
@@ -222,8 +222,8 @@
 			var splashElement = $("#greetingText");
 			UI_hideSubText();
 
-			retryCount = 5;	
-			var running = true;
+			var retryCount  = 12;	
+			var running     = true;
 
 			var intervalFunction = function() {
 				if(!retryCount && running) {
@@ -441,7 +441,7 @@
 
 	<div id="email_ui" style="display:none">
 		<center><h1>Sorry for the wait.</h1>
-		<p>It's taking longer than normal to process your query. If you type your email address in the box below, Sentimentron will send you an email when your results are ready. Alternatively, you can continue waiting.</p>
+		<p>It's taking longer than normal to process your query. Enter your email, and Sentimentron will let you know when your results are ready. Alternatively, you can continue waiting.</p>
 		<form id="delayedQueryForm" action="javascript:void(0)">
 			<input id="emailBox" />
 			<input type="submit" value="Submit &gt;" />
