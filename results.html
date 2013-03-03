@@ -645,43 +645,50 @@
 		// Produce the plot of things the site links to
 		var linkChartData = [];
 		var linkChartSeries = [];
-		$.each(originalData['external'], function(t) {
-			var color = UI_getRandomColour();
-			var record = {'label': t, 'data': originalData['external'][t], 'color': color};
-			linkChartSeries.push([t, color])
-			linkChartData.push(record);
-		});
+		var plotLinkChart = true; 
+		if(!('external') in originalData) 
+			plotLinkChart = false;
+		else {
+			$.each(originalData['external'], function(t) {
+				var color = UI_getRandomColour();
+				var record = {'label': t, 'data': originalData['external'][t], 'color': color};
+				linkChartSeries.push([t, color])
+				linkChartData.push(record);
+			});
 
-		// Create a manual series
-		for(var i = 0; i < linkChartSeries.length; i++) {
-			var spanTemplate = $("<span class=\"linkSeriesSpan\"/>");
-			var text = linkChartSeries[i][0];
-			if(i != linkChartSeries.length - 1) text += ", "
-			spanTemplate.text(text);
-			spanTemplate.css('color', linkChartSeries[i][1]);
-			linkSeries.append(spanTemplate);
+			// Create a manual series
+			for(var i = 0; i < linkChartSeries.length; i++) {
+				var spanTemplate = $("<span class=\"linkSeriesSpan\"/>");
+				var text = linkChartSeries[i][0];
+				if(i != linkChartSeries.length - 1) text += ", "
+				spanTemplate.text(text);
+				spanTemplate.css('color', linkChartSeries[i][1]);
+				linkSeries.append(spanTemplate);
+			}
 		}
 
-		$.plot(linkPlot, linkChartData, {
-			series: {
-			        pie: {
-			            show: true,
-			            radius: 1,
-			            label: {
-			                show: false,
-			                formatter: _UI_labelFormatter,
-			                background: {
-			                    opacity: 0.5,
-			                    color: '#000'
-			                }, 
-			                threshold: 0.1
-			            }
-			        }
-			    },
-			    legend: {
-			        show: false
-			    }
+		if(plotLinkChart) {
+			$.plot(linkPlot, linkChartData, {
+				series: {
+				        pie: {
+				            show: true,
+				            radius: 1,
+				            label: {
+				                show: false,
+				                formatter: _UI_labelFormatter,
+				                background: {
+				                    opacity: 0.5,
+				                    color: '#000'
+				                }, 
+				                threshold: 0.1
+				            }
+				        }
+				    },
+				    legend: {
+				        show: false
+				    }
 			});
+		}
 
 		additionalTable.show();
 			
