@@ -646,8 +646,9 @@
 		var linkChartData = [];
 		var linkChartSeries = [];
 		var plotLinkChart = true; 
-		if(!('external') in originalData) 
+		if(!('external' in originalData)) {
 			plotLinkChart = false;
+		}
 		else {
 			$.each(originalData['external'], function(t) {
 				var color = UI_getRandomColour();
