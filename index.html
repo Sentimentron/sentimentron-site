@@ -286,6 +286,8 @@
 				// Hide minor errors
 				UI_hideSubText();
 
+				("#spinnerGraphic").show();
+
 				// Retrieve text from the search bar 
 				var searchBox = $("#searchBar");
 				var query = searchBox.val();
@@ -428,7 +430,7 @@
 		</div>
 		<p>Enter some sites and/or keywords you want to know about.</p>
 		<p id="subText" style="display:none"> </p>
-
+		<img src="spinner.gif" id="spinnerGraphic" style="display:none" />
 	</div>
 
 
