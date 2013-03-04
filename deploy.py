@@ -39,6 +39,10 @@ def deploy_front():
 	paths.key = "paths.js"
 	paths.set_contents_from_filename("paths.production.js")
 
+	spinner = Key(bucket)
+	paths.key = "spinner.gif"
+	paths.set_contents_from_filename("spinner.gif")
+
 def deploy_results():
 
 	conn = S3Connection()
