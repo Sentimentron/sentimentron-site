@@ -24,7 +24,8 @@ def deploy_static(to_what):
 def deploy_front():
 
 	conn = S3Connection()
-	deploy_static("www.sentimentron.co.uk")
+	if "page" not in sys.argv:
+		deploy_static("www.sentimentron.co.uk")
 	bucket = conn.get_bucket('www.sentimentron.co.uk')
 
 	front_page = Key(bucket)
@@ -46,7 +47,8 @@ def deploy_front():
 def deploy_results():
 
 	conn = S3Connection()
-	deploy_static("results.sentimentron.co.uk")
+	if "page" not in sys.argv:
+		deploy_static("results.sentimentron.co.uk")
 	bucket = conn.get_bucket('results.sentimentron.co.uk')
 
 
