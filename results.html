@@ -887,7 +887,13 @@
 		UI_addPlotSection("Overview", overviewSection);
 
 		console.log("RPC_consumeInput");
+		var maxDomains = 10;
+		var curDomain  = 0;
 		$.each(documentSection, function(index, item){
+			curDomain++; 
+			if(curDomain > maxDomains) {
+				return;
+			}
 			var title = UI_addPlotSection(index, item);
 			console.log([index,item]);
 			_UI_plotSection_additional(title, data['aux'][index]);

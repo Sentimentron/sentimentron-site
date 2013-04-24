@@ -44,6 +44,22 @@ def deploy_front():
 	paths.key = "spinner.gif"
 	paths.set_contents_from_filename("spinner.gif")
 
+def deploy_pysen():
+
+	conn = S3Connection()
+	bucket = conn.get_bucket("pysen.sentimentron.co.uk")
+
+	if "page" not in sys.argv:
+		deploy_static("pysen.sentimentron.co.uk")
+
+	index_page = Key(bucket)
+	index_page.key = "index.html"
+	index_page.set_contents_from_filename("pysen.html")
+
+	error_page = Key(bucket)
+	error_page.key = "error.html"
+	error_page.set_contents_from_filename("pysen_error.html")
+
 def deploy_results():
 
 	conn = S3Connection()
@@ -67,3 +83,6 @@ if __name__ == "__main__":
 
 	if "results" in sys.argv:
 		deploy_results()
+
+	if "pysen" in sys.argv:
+		deploy_pysen()
