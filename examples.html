@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://www.sentimentron.co.uk/ -->
+<html><head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>Sentimentron</title>
+
+	<script src="assets/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./assets/style.css">
+
+	<style type="text/css">
+	h1 {
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
+	#termsDiv {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 1000px;
+		background: rgba(245,245,245,1.0);
+		color:black;
+		border: 1px solid gray;
+		padding: 15px;
+		margin-top: 15px;
+	}
+
+	#termsDiv p,li {
+		font-size: 15px;
+		margin-left: 50px;
+		margin-right: 50px;
+		line-height: 1.5;
+	}
+
+	#termsDiv a {
+		color: gray;
+	}
+
+	h2 {
+		margin-left: 35px;
+	}
+
+	pre {
+		margin-left: 55px;
+	}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="header">
+
+		<a href="http://sentimentron.co.uk"><img id="logo" src="./assets/Sentimentron.png"></a>
+
+		<p><a href="http://www.sentimentron.co.uk/info.html">Acknowledgements</a></p>
+		<p><a href="https://github.com/Sentimentron/docs/wiki/Statistics">Stats</a></p>
+		<p><a href="https://github.com/Sentimentron/docs/wiki/Introducing-Sentimentron">About</a></p>
+
+		<div id="header-search-form">
+
+			<form>
+				<input type="text">
+				<img id="search-mag" src="./assets/magnifier.png">
+			</form>
+
+		</div>
+
+	</div>
+
+	<div id="termsDiv">
+		<h1> Examples </h1>
+
+		<p> To use any of these examples, copy them into the search box. </p>
+
+		<h2> View results from a specific site </h2>
+		<pre>arstechnica.com</pre>
+
+		<h2> View results from pages with a keyword </h2>
+		<pre>iPhone</pre>
+		<p> Sentimentron will automatically expand your query to include similar terms. If you don't want them, use <b>+</b> to prevent expansion.</p>
+		<pre>+iPhone</pre>
+		<p> You can also use <b>-</b> to exclude certain expansions.</p>
+		<pre>iPod -"iPod Touch"</pre>
+
+		<h2> View results from sites matching a keyword </h2>
+		<p> You can use <b>&amp;</b> to combine results.</i>
+		<pre>iPhone <b>&amp;</b> daringfireball.net</pre>
+
+		<h2> Combine queries </h2>
+		<p> You can combine multiple queries using <b>&amp;</b> and/or <b>|</b></p>
+		<pre> (iPhone | iPod) &amp; arstechnica.com </pre> 
+		<pre> ALCOA | AXP </pre> 
+
+	</div>
+
+</div>
+<div id="footer">
+	<p>Copyright &copy; 2012-2013 Richard Townsend. Sentimentron is a research project, results are automatically generated and may not be accurate. Use of Sentimentron is subject to some <a href="http://www.sentimentron.co.uk/info.html#terms">terms of use</a>. Also see the <a href="http://www.sentimentron.co.uk/info.html#privacy">privacy policy.</a><br /><a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset" property="dct:title" rel="dct:type">Sentimentron's results</span> are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.<br /></p>
+</div>
+
+</body></html>

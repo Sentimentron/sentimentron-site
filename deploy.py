@@ -36,6 +36,10 @@ def deploy_front():
 	info_page.key  = "info.html"
 	info_page.set_contents_from_filename("info.html")
 
+	example_page = Key(bucket)
+	example_page.key = "examples.html"
+	example_page.set_contents_from_filename("examples.html")
+
 	paths = Key(bucket)
 	paths.key = "paths.js"
 	paths.set_contents_from_filename("paths.production.js")
